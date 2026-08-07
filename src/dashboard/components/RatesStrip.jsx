@@ -24,7 +24,7 @@ const RATES = [
 export function RatesTape() {
   const row = [...RATES, ...RATES];
   return (
-    <div className="card dash-surface rounded-2xl overflow-hidden">
+    <div className="card rounded-2xl overflow-hidden">
       <div className="ticker-track flex items-center gap-8 py-3 whitespace-nowrap">
         {row.map((r, i) => (
           <div key={i} className="flex items-center gap-2 shrink-0 px-1">
@@ -50,7 +50,7 @@ export function YieldCurve() {
   const spread = (latest - YIELDS[0]).toFixed(2);
 
   return (
-    <div className="dash-glow-card rounded-3xl p-6 md:p-7">
+    <div className="card rounded-3xl p-6 md:p-7">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="text-[12.5px] text-[color:var(--muted-2)]">Reference yield curve</p>

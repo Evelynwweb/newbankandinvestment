@@ -117,7 +117,7 @@ export default function Transfers() {
       <>
         <PageHeader eyebrow="Transfers" title="Transfer submitted" />
         <DashReveal>
-          <div className="card dash-surface rounded-3xl p-8 md:p-12 flex flex-col items-center text-center">
+          <div className="card rounded-3xl p-8 md:p-12 flex flex-col items-center text-center">
             <div className="dash-success-ring"><Check size={38} strokeWidth={3} /></div>
             <h3 className="font-display text-[22px] font-semibold mt-6 text-[color:var(--ink)]">
               {fmtUSD(amt)} on its way
@@ -160,7 +160,7 @@ export default function Transfers() {
       </DashReveal>
 
       <DashReveal delay={60}>
-        <div className="card dash-surface rounded-3xl p-6 md:p-8">
+        <div className="card rounded-3xl p-6 md:p-8">
           <Stepper steps={STEPS} current={step} />
 
           <div className="mt-8 dash-step-panel" key={`${scope}-${step}`}>
@@ -313,7 +313,7 @@ export default function Transfers() {
             {/* ---------- step 2: review ---------- */}
             {step === 2 && (
               <div className="max-w-md">
-                <div className="card-grad rounded-2xl p-6">
+                <div className="card rounded-2xl p-6">
                   <p className="text-[11px] uppercase tracking-widest text-[color:var(--muted-2)]">You’re sending</p>
                   <p className="font-display text-[36px] font-semibold mt-1 text-[color:var(--ink)]">{fmtUSD(amt)}</p>
 
@@ -379,7 +379,7 @@ export default function Transfers() {
             { icon: Building2, title: 'ACH transfers', body: 'Free to any US bank account, settling in one to two business days.' },
             { icon: Globe, title: 'International wires', body: 'The full cost is quoted up front — no hidden exchange-rate spread.' },
           ].map((c) => (
-            <div key={c.title} className="card dash-surface rounded-2xl p-5">
+            <div key={c.title} className="card rounded-2xl p-5">
               <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: 'rgba(245,158,11,0.1)' }}>
                 <c.icon size={16} className="text-[color:var(--accent)]" />
               </div>

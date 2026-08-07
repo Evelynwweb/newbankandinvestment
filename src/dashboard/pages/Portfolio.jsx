@@ -29,7 +29,7 @@ export default function Portfolio() {
       />
 
       <DashReveal>
-        <div className="dash-glow-card rounded-3xl p-6 md:p-8">
+        <div className="card rounded-3xl p-6 md:p-8">
           <p className="text-[11px] uppercase tracking-widest text-[color:var(--muted-2)]">Net worth with Aurivest</p>
           <p className="font-display text-[40px] md:text-[52px] font-semibold leading-none mt-2 text-[color:var(--ink)]">
             {fmtUSD(netWorth)}
@@ -52,7 +52,7 @@ export default function Portfolio() {
       </DashReveal>
 
       <DashReveal delay={60}>
-        <div className="card dash-surface rounded-2xl p-5 md:p-6">
+        <div className="card rounded-2xl p-5 md:p-6">
           <p className="font-display text-[16px] font-medium mb-4 text-[color:var(--ink)]">Accounts</p>
           <div className="flex flex-col">
             {accounts.map((a) => {
@@ -79,7 +79,7 @@ export default function Portfolio() {
       </DashReveal>
 
       <DashReveal delay={110}>
-        <div className="card dash-surface rounded-2xl p-5 md:p-6">
+        <div className="card rounded-2xl p-5 md:p-6">
           <div className="flex items-center justify-between mb-4">
             <p className="font-display text-[16px] font-medium text-[color:var(--ink)]">Holdings</p>
             <button onClick={() => navigate('/dashboard/invest')} className="text-[12px] text-[color:var(--accent-soft)] flex items-center gap-0.5">

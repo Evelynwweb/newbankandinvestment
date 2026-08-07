@@ -48,7 +48,7 @@ export default function Withdrawal() {
       <>
         <PageHeader eyebrow="Move out" title="Withdrawal" />
         <DashReveal>
-          <div className="card dash-surface rounded-3xl p-8 md:p-12 flex flex-col items-center text-center">
+          <div className="card rounded-3xl p-8 md:p-12 flex flex-col items-center text-center">
             <div className="w-16 h-16 rounded-2xl flex items-center justify-center" style={{ background: 'rgba(245,158,11,0.12)' }}>
               <ShieldCheck size={28} className="text-[color:var(--accent)]" />
             </div>
@@ -96,7 +96,7 @@ export default function Withdrawal() {
       <>
         <PageHeader eyebrow="Withdrawal" title="Withdrawal requested" />
         <DashReveal>
-          <div className="card dash-surface rounded-3xl p-8 md:p-12 flex flex-col items-center text-center">
+          <div className="card rounded-3xl p-8 md:p-12 flex flex-col items-center text-center">
             <div className="dash-success-ring"><Check size={38} strokeWidth={3} /></div>
             <h3 className="font-display text-[22px] font-semibold mt-6 text-[color:var(--ink)]">{fmtUSD(amt)} on its way</h3>
             <p className="text-[13.5px] mt-2 max-w-sm leading-relaxed text-[color:var(--muted-2)]">
@@ -120,7 +120,7 @@ export default function Withdrawal() {
       />
 
       <DashReveal>
-        <div className="card dash-surface rounded-3xl p-6 md:p-8">
+        <div className="card rounded-3xl p-6 md:p-8">
           <Stepper steps={STEPS} current={step} />
 
           <div className="mt-8 dash-step-panel" key={step}>
@@ -221,7 +221,7 @@ export default function Withdrawal() {
 
             {step === 2 && (
               <div className="max-w-md">
-                <div className="card-grad rounded-2xl p-6">
+                <div className="card rounded-2xl p-6">
                   <p className="text-[11px] uppercase tracking-widest text-[color:var(--muted-2)]">Withdrawing</p>
                   <p className="font-display text-[36px] font-semibold mt-1 text-[color:var(--ink)]">{fmtUSD(amt)}</p>
 

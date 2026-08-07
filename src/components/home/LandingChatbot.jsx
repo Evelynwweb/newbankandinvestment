@@ -62,7 +62,7 @@ export default function LandingChatbot() {
               <div>
                 <p className="text-[14px] font-semibold text-[color:var(--ink)]">{BOT_NAME} · Aurivest</p>
                 <p className="flex items-center gap-1.5 text-[10.5px] text-[color:var(--up)]">
-                  <span className="pulse-dot w-1.5 h-1.5 rounded-full bg-[color:var(--up)]" /> Online — instant answers
+                  <span className="w-1.5 h-1.5 rounded-full bg-[color:var(--up)]" /> Online — instant answers
                 </p>
               </div>
             </div>

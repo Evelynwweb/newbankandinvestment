@@ -86,7 +86,7 @@ export default function TransactionHistory() {
           { label: 'Money out', value: fmtUSD(outflow), accent: 'var(--ink)' },
           { label: 'Entries shown', value: String(rows.length), accent: 'var(--ink)' },
         ].map((s) => (
-          <div key={s.label} className="card dash-surface rounded-2xl p-5">
+          <div key={s.label} className="card rounded-2xl p-5">
             <p className="text-[10.5px] uppercase tracking-widest text-[color:var(--muted-2)]">{s.label}</p>
             <p className="font-mono text-[22px] mt-2.5 tabular-nums" style={{ color: s.accent }}>{s.value}</p>
           </div>
@@ -94,7 +94,7 @@ export default function TransactionHistory() {
       </DashReveal>
 
       <DashReveal delay={60}>
-        <div className="card dash-surface rounded-2xl p-5 md:p-6">
+        <div className="card rounded-2xl p-5 md:p-6">
           <div className="flex flex-wrap items-center gap-3 mb-5">
             <div className="dash-search flex items-center gap-2.5 rounded-2xl px-4 py-2.5 flex-1 min-w-[200px]">
               <Search size={15} className="text-[color:var(--muted-2)]" />

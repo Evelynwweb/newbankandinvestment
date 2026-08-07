@@ -54,7 +54,7 @@ function ApplyModal({ product, onClose, onDone }) {
       <div className="absolute inset-0 bg-black/75" style={{ animation: 'dashFadeIn 0.3s ease both' }} onClick={onClose} />
       <form
         onSubmit={submit}
-        className="dash-surface card relative w-full max-w-[440px] rounded-3xl p-7 overflow-hidden"
+        className="card relative w-full max-w-[440px] rounded-3xl p-7 overflow-hidden"
         style={{ animation: 'dashModalIn 0.4s cubic-bezier(.16,1,.3,1) both' }}
       >
         <div className="absolute -top-16 -right-12 w-44 h-44 rounded-full opacity-20 blur-3xl" style={{ background: 'var(--accent)' }} />
@@ -97,7 +97,7 @@ function ApplyModal({ product, onClose, onDone }) {
           </select>
         </div>
 
-        <div className="relative card-grad rounded-2xl p-5 mt-6 flex flex-col gap-2.5">
+        <div className="relative card rounded-2xl p-5 mt-6 flex flex-col gap-2.5">
           <div className="flex items-center justify-between">
             <span className="text-[12.5px] text-[color:var(--muted-2)]">Estimated monthly payment</span>
             <span className="font-mono text-[17px] font-semibold text-[color:var(--ink)]">{fmtUSD(payment)}</span>
@@ -165,7 +165,7 @@ export default function Loans() {
           { label: 'Due each month', value: fmtUSD(monthlyDue), icon: Clock },
           { label: 'Open facilities', value: String(loans.filter((l) => l.status === 'active').length), icon: Coins },
         ].map((s) => (
-          <div key={s.label} className="card dash-surface rounded-2xl p-5">
+          <div key={s.label} className="card rounded-2xl p-5">
             <div className="flex items-center justify-between">
               <p className="text-[10.5px] uppercase tracking-widest text-[color:var(--muted-2)]">{s.label}</p>
               <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(245,158,11,0.1)' }}>
@@ -179,7 +179,7 @@ export default function Loans() {
 
       {loans.length > 0 && (
         <DashReveal delay={60}>
-          <div className="card dash-surface rounded-2xl p-5 md:p-6">
+          <div className="card rounded-2xl p-5 md:p-6">
             <p className="font-display text-[16px] font-medium mb-4 text-[color:var(--ink)]">Your facilities</p>
             <div className="flex flex-col gap-4">
               {loans.map((loan) => {

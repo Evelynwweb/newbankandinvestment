@@ -24,7 +24,7 @@ function AccountCard({ account, hidden, onCopy, copied }) {
   const meta = ACCOUNT_META[account.kind] || { label: account.kind, color: 'var(--accent)' };
 
   return (
-    <div className="card dash-surface rounded-2xl p-6 relative overflow-hidden flex flex-col">
+    <div className="card rounded-2xl p-6 relative overflow-hidden flex flex-col">
       <div
         className="absolute -top-16 -right-16 w-48 h-48 rounded-full opacity-20 blur-3xl pointer-events-none"
         style={{ background: meta.color }}
@@ -132,7 +132,7 @@ export default function Accounts() {
       </PageHeader>
 
       <DashReveal>
-        <div className="dash-glow-card rounded-3xl p-6 md:p-7 flex flex-wrap items-end justify-between gap-6">
+        <div className="card rounded-3xl p-6 md:p-7 flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="text-[11px] uppercase tracking-widest text-[color:var(--muted-2)]">Total across accounts</p>
             <p className="font-display text-[38px] md:text-[46px] font-semibold leading-none mt-2 text-[color:var(--ink)]">
@@ -157,7 +157,7 @@ export default function Accounts() {
       </DashReveal>
 
       <DashReveal delay={140}>
-        <div className="card dash-surface rounded-2xl p-5 md:p-6">
+        <div className="card rounded-2xl p-5 md:p-6">
           <div className="flex items-center justify-between mb-4">
             <div>
               <p className="font-display text-[16px] font-medium text-[color:var(--ink)]">Saved recipients</p>

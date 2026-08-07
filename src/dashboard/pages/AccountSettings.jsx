@@ -13,7 +13,7 @@ import { fmtDate } from '../../lib/format.js';
 
 function Section({ icon: Icon, title, subtitle, children }) {
   return (
-    <div className="card dash-surface rounded-2xl p-5 md:p-6">
+    <div className="card rounded-2xl p-5 md:p-6">
       <div className="flex items-start gap-3 mb-5">
         <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(245,158,11,0.1)' }}>
           <Icon size={16} className="text-[color:var(--accent)]" />

@@ -47,7 +47,7 @@ export default function Kyc() {
       <>
         <PageHeader eyebrow="Compliance" title="Identity verification" />
         <DashReveal>
-          <div className="card dash-surface rounded-3xl p-8 md:p-12 flex flex-col items-center text-center">
+          <div className="card rounded-3xl p-8 md:p-12 flex flex-col items-center text-center">
             <div
               className="w-16 h-16 rounded-2xl flex items-center justify-center"
               style={{ background: approved ? 'rgba(52,211,153,0.12)' : 'rgba(245,158,11,0.12)' }}
@@ -115,7 +115,7 @@ export default function Kyc() {
       />
 
       <DashReveal>
-        <div className="card dash-surface rounded-3xl p-6 md:p-8">
+        <div className="card rounded-3xl p-6 md:p-8">
           <Stepper steps={STEPS} current={step} />
 
           <div className="mt-8 dash-step-panel" key={step}>
@@ -202,7 +202,7 @@ export default function Kyc() {
 
             {step === 2 && (
               <div className="max-w-md">
-                <div className="card-grad rounded-2xl p-6">
+                <div className="card rounded-2xl p-6">
                   <p className="text-[11px] uppercase tracking-widest text-[color:var(--muted-2)] mb-4">Review submission</p>
                   {[
                     ['Name', form.fullName],
@@ -256,7 +256,7 @@ export default function Kyc() {
           { icon: Clock, title: 'How long it takes', body: 'Most submissions clear within 24 hours; complex cases within three days.' },
           { icon: Lock, title: 'What happens to it', body: 'Stored encrypted, retained only as long as regulation requires, never sold.' },
         ].map((c) => (
-          <div key={c.title} className="card dash-surface rounded-2xl p-5">
+          <div key={c.title} className="card rounded-2xl p-5">
             <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: 'rgba(245,158,11,0.1)' }}>
               <c.icon size={16} className="text-[color:var(--accent)]" />
             </div>

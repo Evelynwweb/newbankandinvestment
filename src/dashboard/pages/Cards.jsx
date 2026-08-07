@@ -102,7 +102,7 @@ export default function Cards() {
 
       {creating && (
         <DashReveal>
-          <form onSubmit={createCard} className="card dash-surface rounded-2xl p-6 grid sm:grid-cols-[1fr_180px_auto] gap-4 items-end">
+          <form onSubmit={createCard} className="card rounded-2xl p-6 grid sm:grid-cols-[1fr_180px_auto] gap-4 items-end">
             <div>
               <label className="auth-label">Card name</label>
               <input
@@ -141,7 +141,7 @@ export default function Cards() {
             <div key={card._id} className="flex flex-col gap-4">
               <PayCard card={card} holder={user?.name || 'Cardholder'} revealed={revealed === card._id} />
 
-              <div className="card dash-surface rounded-2xl p-5">
+              <div className="card rounded-2xl p-5">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-[14px] font-medium text-[color:var(--ink)]">{card.label}</p>
@@ -200,7 +200,7 @@ export default function Cards() {
           { icon: Lock, title: 'Per-card limits', body: 'Cap what each card can spend per month — useful for subscriptions and staff.' },
           { icon: ShieldCheck, title: 'Zero liability', body: 'You’re never on the hook for confirmed fraudulent card transactions.' },
         ].map((c) => (
-          <div key={c.title} className="card dash-surface rounded-2xl p-5">
+          <div key={c.title} className="card rounded-2xl p-5">
             <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: 'rgba(245,158,11,0.1)' }}>
               <c.icon size={16} className="text-[color:var(--accent)]" />
             </div>

@@ -43,22 +43,24 @@ The routes the backend must implement are the ones handled in `src/lib/mockApi.j
 `/api/dashboard/overview`, accounts, transfers, cards, investments, portfolio, transactions,
 deposits, withdrawals, loans, referrals, profile and KYC.
 
-## Design system
+## Design system — "Ledger"
 
-Tokens live in `src/index.css` under `:root`, with a light-mode override on
-`html[data-dash-theme='light']` that the dashboard and auth shells stamp on `<html>` while mounted.
+A warm editorial system: ivory paper, hairline rules, a serif masthead, flat
+surfaces. Nothing glows, tilts or floats, and the only motion is one short
+fade-and-rise. Tokens live in `src/index.css`; the dashboard and auth shells
+stamp `data-dash-theme` on `<html>` to switch to the dark variant.
 
-| Token | Dark | Role |
+| Token | Light | Role |
 | --- | --- | --- |
-| `--bg` | `#0E0904` | warm espresso base |
-| `--card` / `--card-soft` | `#1B1108` / `#26190C` | surfaces |
-| `--gold` | `#E4C79A` | champagne secondary |
-| `--gold-bright` → `--ember` | `#F59E0B` → `#EA580C` | the amber accent gradient |
-| `--rose` | `#FCD34D` | gradient highlight |
-| `--cream` | `#FFF7EC` | primary text |
-| `--up` / `--down` | `#34D399` / `#FB7185` | credit / debit |
+| `--paper` / `--paper-2` | `#FAF6EF` / `#F2EBDD` | page and inset backgrounds |
+| `--surface` / `--surface-2` | `#FFFFFF` / `#F7F1E7` | cards |
+| `--rule` / `--rule-soft` | `#E4D9C5` / `#EFE7D8` | hairlines |
+| `--ink` / `--ink-2` | `#1C1712` / `#3D342A` | primary and secondary text |
+| `--muted` / `--muted-2` | `#6E6153` / `#9A8B79` | supporting and faint text |
+| `--accent` | `#B45309` | the amber the whole brand rests on |
+| `--on-accent` | `#FFF8EE` | text sitting on an amber fill |
 
-Typography: **Clash Display** (headings), **General Sans** (body), **JetBrains Mono** (figures).
+Typography: **Fraunces** (display serif), **Inter** (body), **JetBrains Mono** (figures).
 
 ## Structure
 
@@ -66,7 +68,7 @@ Typography: **Clash Display** (headings), **General Sans** (body), **JetBrains M
 src/
   Homepage.jsx              marketing landing page
   App.jsx                   routes (lazy-loaded per screen)
-  index.css                 design tokens + shared animation classes
+  index.css                 design tokens, editorial furniture, one reveal
   auth/                     AuthContext, shell, login, 3-step registration, email verification
   components/
     home/                   Navbar, Footer, ScrollStage, LandingChatbot
@@ -77,17 +79,30 @@ src/
     Dashboard.jsx           overview
     dashboard.css           dashboard-only styles
     data.jsx                nav model, formatters, dashboard primitives
-    components/             layout shell, navs, stepper, banners, tour, support widget, rate widgets
+    components/             layout shell, navs, stepper, notices, support widget, rate widgets
     pages/                  Accounts, Transfers, Cards, Invest, Portfolio, Deposit,
                             Withdrawal, Loans, Transactions, Referrals, Settings, KYC
 ```
 
+## Not built (deliberately)
+
+These were cut from scope and are absent from the frontend, the backend and the
+admin panel — not hidden behind a flag:
+
+- **Email verification.** Accounts are usable the moment they're opened.
+  To reintroduce it, see the note at the top of `invandbankbackend/routes/auth.js`.
+- **Welcome bonus / account-opening gift.** Removed end to end, including the
+  settings toggle and the claim endpoint.
+- **Onboarding tour** and the **swipeable stat carousel** — the overview shows a
+  single balance card and a plain figures grid at every width.
+
 ## Notes
 
-- **KYC is a hard gate.** Until identity documents are submitted, the dashboard redirects to
-  `/dashboard/kyc`, and withdrawals stay locked until verification is approved.
-- **Card numbers rendered on the Cards screen are illustrative.** A production deployment must
-  never render a full PAN in the browser — surface only the last four digits.
-- **Rates and returns are placeholder content.** The target rates on market-linked mandates are
-  written as objectives, not guarantees, and the disclosure copy reflects that. Keep it that way,
-  and have compliance review the wording before this goes near real customers.
+- **KYC is still a hard gate.** Until identity documents are submitted, the
+  dashboard redirects to `/dashboard/kyc`, and withdrawals stay locked until
+  verification is approved.
+- **Card numbers on the Cards screen are illustrative.** A production deployment
+  must never render a full PAN in the browser.
+- **Rates and returns are placeholder content.** Target rates on market-linked
+  mandates are written as objectives, not guarantees. Have compliance review the
+  wording before this goes near real customers.

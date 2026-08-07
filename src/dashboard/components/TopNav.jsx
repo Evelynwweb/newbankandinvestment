@@ -32,12 +32,12 @@ export default function TopNav({ activeLabel, mobileNavOpen, setMobileNavOpen, t
         <button
           onClick={onToggleTheme}
           aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-          className="dash-icon-btn dash-icon-cluster"
+          className="dash-icon-btn"
         >
           {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
         </button>
 
-        <div className="hidden sm:flex items-center gap-1 dash-icon-cluster rounded-full px-1 py-1">
+        <div className="hidden sm:flex items-center gap-1 rounded-full px-1 py-1">
           <button onClick={onRefresh} aria-label="Refresh" className="dash-icon-btn">
             <RefreshCcw size={14} />
           </button>

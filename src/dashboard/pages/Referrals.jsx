@@ -39,7 +39,7 @@ export default function Referrals() {
       />
 
       <DashReveal>
-        <div className="dash-glow-card rounded-3xl p-6 md:p-8">
+        <div className="card rounded-3xl p-6 md:p-8">
           <div className="grid md:grid-cols-3 gap-6">
             {[
               { label: 'People invited', value: String(data.invited) },
@@ -85,7 +85,7 @@ export default function Referrals() {
 
       <DashReveal delay={60} className="grid sm:grid-cols-3 gap-4">
         {STEPS.map((s, i) => (
-          <div key={s.title} className="card dash-surface rounded-2xl p-6">
+          <div key={s.title} className="card rounded-2xl p-6">
             <div className="flex items-center justify-between">
               <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(245,158,11,0.12)' }}>
                 <s.icon size={17} className="text-[color:var(--accent)]" />
@@ -99,7 +99,7 @@ export default function Referrals() {
       </DashReveal>
 
       <DashReveal delay={110}>
-        <div className="card dash-surface rounded-2xl p-5 md:p-6">
+        <div className="card rounded-2xl p-5 md:p-6">
           <p className="font-display text-[16px] font-medium mb-4 text-[color:var(--ink)]">Reward history</p>
           {data.history.length === 0 ? (
             <div className="flex flex-col items-center gap-3 py-10 text-center">

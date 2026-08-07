@@ -45,7 +45,7 @@ function SubscribeModal({ plan, accounts, onClose, onDone }) {
       <div className="absolute inset-0 bg-black/75" style={{ animation: 'dashFadeIn 0.3s ease both' }} onClick={onClose} />
       <form
         onSubmit={submit}
-        className="dash-surface card relative w-full max-w-[440px] rounded-3xl p-7 overflow-hidden"
+        className="card relative w-full max-w-[440px] rounded-3xl p-7 overflow-hidden"
         style={{ animation: 'dashModalIn 0.4s cubic-bezier(.16,1,.3,1) both' }}
       >
         <div className="absolute -top-16 -right-12 w-44 h-44 rounded-full opacity-20 blur-3xl" style={{ background: 'var(--accent)' }} />
@@ -91,7 +91,7 @@ function SubscribeModal({ plan, accounts, onClose, onDone }) {
           )}
         </div>
 
-        <div className="relative card-grad rounded-2xl p-5 mt-6">
+        <div className="relative card rounded-2xl p-5 mt-6">
           <div className="flex items-center justify-between text-[12.5px]">
             <span className="text-[color:var(--muted-2)]">Projected at {plan.termMonths ? `${plan.termMonths} months` : '12 months'}</span>
             <span className="font-mono text-[15px] font-semibold text-[color:var(--up)]">{fmtUSD(projected)}</span>
@@ -160,7 +160,7 @@ export default function Invest() {
           { label: 'Earned so far', value: fmtUSD(totalAccrued), icon: TrendingUp, accent: true },
           { label: 'Active mandates', value: String(mine.filter((i) => i.status === 'active').length), icon: Clock },
         ].map((s) => (
-          <div key={s.label} className="card dash-surface rounded-2xl p-5">
+          <div key={s.label} className="card rounded-2xl p-5">
             <div className="flex items-center justify-between">
               <p className="text-[10.5px] uppercase tracking-widest text-[color:var(--muted-2)]">{s.label}</p>
               <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(245,158,11,0.1)' }}>
@@ -220,7 +220,7 @@ export default function Invest() {
       </DashReveal>
 
       <DashReveal delay={120}>
-        <div className="card dash-surface rounded-2xl p-5 md:p-6">
+        <div className="card rounded-2xl p-5 md:p-6">
           <p className="font-display text-[16px] font-medium mb-4 text-[color:var(--ink)]">Your mandates</p>
 
           {mine.length === 0 ? (

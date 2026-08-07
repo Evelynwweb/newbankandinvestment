@@ -38,7 +38,7 @@ export default function MobileNav({ open, onClose, balance }) {
           </button>
         </div>
 
-        <div className="dash-side-stat mx-2 mb-5 rounded-2xl px-3.5 py-3">
+        <div className="card-inset mx-2 mb-5 rounded-2xl px-3.5 py-3">
           <p className="text-[10px] uppercase tracking-widest text-[color:var(--muted-2)]">Available balance</p>
           <div className="flex items-center justify-between mt-1">
             <p className="font-mono text-[16px] font-semibold text-[color:var(--ink)]">{fmtUSD(balance, { maximumFractionDigits: 0 })}</p>

@@ -50,7 +50,7 @@ export default function SupportWidget() {
   return (
     <>
       {open && (
-        <div className="dash-support-panel card dash-surface">
+        <div className="dash-support-panel card">
           <div className="flex items-center justify-between px-4 py-3.5" style={{ borderBottom: '1px solid var(--rule-soft)' }}>
             <div className="flex items-center gap-2.5">
               <div className="w-9 h-9 rounded-full flex items-center justify-center shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-deep))' }}>
@@ -59,7 +59,7 @@ export default function SupportWidget() {
               <div>
                 <p className="text-[13.5px] font-semibold text-[color:var(--ink)]">Client support</p>
                 <p className="flex items-center gap-1.5 text-[10.5px] text-[color:var(--up)]">
-                  <span className="pulse-dot w-1.5 h-1.5 rounded-full bg-[color:var(--up)]" /> Online 24/7
+                  <span className="w-1.5 h-1.5 rounded-full bg-[color:var(--up)]" /> Online 24/7
                 </p>
               </div>
             </div>
@@ -81,10 +81,10 @@ export default function SupportWidget() {
             ))}
           </div>
 
-          <div className="home-chat-scroll">
+          <div className="chat-scroll">
             {messages.map((m, i) => (
               <div key={i} className={m.from === 'user' ? 'flex justify-end' : 'flex'}>
-                <div className={m.from === 'user' ? 'home-chat-bubble-user' : 'home-chat-bubble-bot'}>
+                <div className={m.from === 'user' ? 'chat-bubble-user' : 'chat-bubble-bot'}>
                   <p className="text-[12.5px] leading-relaxed whitespace-pre-wrap">{m.text}</p>
                   {m.link && (
                     <button onClick={() => { setOpen(false); navigate(m.link.to); }} className="flex items-center gap-1.5 text-[12px] font-semibold mt-2 text-[color:var(--accent)]">
@@ -95,7 +95,7 @@ export default function SupportWidget() {
               </div>
             ))}
             {typing && (
-              <div className="home-chat-bubble-bot home-chat-typing w-fit"><span /><span /><span /></div>
+              <div className="chat-bubble-bot chat-typing w-fit"><span /><span /><span /></div>
             )}
             <div ref={endRef} />
           </div>
