@@ -1,0 +1,423 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+/* ============================================================
+   AURIVEST — "Ledger"
+
+   A warm editorial system, not a cinematic one. Ivory paper,
+   hairline rules, a serif masthead, flat surfaces. Nothing glows,
+   nothing tilts, nothing floats. The only motion is a short fade
+   and rise, because a bank should feel steady.
+
+   Token names are literal:
+     --paper / --paper-2   page and inset backgrounds
+     --surface / --surface-2  cards
+     --rule / --rule-soft  hairlines
+     --ink / --ink-2       primary and secondary text
+     --muted / --muted-2   supporting and faint text
+     --accent…             the amber family
+     --on-accent           text that sits ON an amber fill
+   ============================================================ */
+
+:root {
+  --paper: #FAF6EF;
+  --paper-2: #F2EBDD;
+  --surface: #FFFFFF;
+  --surface-2: #F7F1E7;
+  --rule: #E4D9C5;
+  --rule-soft: #EFE7D8;
+  --ink: #1C1712;
+  --ink-2: #3D342A;
+  --muted: #6E6153;
+  --muted-2: #9A8B79;
+
+  --accent: #B45309;        /* deep amber — passes contrast on ivory */
+  --accent-soft: #A16207;
+  --accent-deep: #C2410C;
+  --accent-warm: #D97706;
+  --accent-wash: #FDF3E3;   /* faint amber fill for chips and rows */
+  --on-accent: #FFF8EE;
+
+  --up: #15803D;
+  --down: #B91C1C;
+  --scrim: rgba(28,23,18,0.45);
+
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* Dark is a dashboard/auth option only — the marketing site stays on paper. */
+html[data-dash-theme='dark'] {
+  --paper: #14100B;
+  --paper-2: #1B160F;
+  --surface: #1B160F;
+  --surface-2: #241D14;
+  --rule: #3A2E1F;
+  --rule-soft: #291F15;
+  --ink: #F8F2E7;
+  --ink-2: #DCD0BC;
+  --muted: #A99781;
+  --muted-2: #7A6B57;
+
+  --accent: #F59E0B;
+  --accent-soft: #D9A441;
+  --accent-deep: #EA580C;
+  --accent-warm: #FBBF24;
+  --accent-wash: #2A1F11;
+  --on-accent: #23180C;
+
+  --up: #4ADE80;
+  --down: #FB7185;
+  --scrim: rgba(10,7,3,0.6);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--accent); color: var(--on-accent); }
+
+.font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  letter-spacing: -0.015em;
+}
+.font-mono { font-family: var(--font-mono); }
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* ============================================================
+   Motion — one reveal, used everywhere. No parallax, no 3D.
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .55s ease, transform .55s cubic-bezier(.22,.61,.36,1);
+}
+.reveal.in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { transition-duration: .01ms; }
+  * { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+}
+
+/* ============================================================
+   Editorial furniture
+   ============================================================ */
+
+/* A small caps label with a leading rule — the section signature. */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.eyebrow::before {
+  content: '';
+  width: 26px;
+  height: 1px;
+  background: var(--accent);
+  opacity: .55;
+}
+
+/* Section index numeral, e.g. 01 — set in mono, hung in the margin. */
+.section-no {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted-2);
+  letter-spacing: .1em;
+}
+
+.rule { height: 1px; background: var(--rule); border: 0; }
+
+/* Underline that sits under a heading word without a background. */
+.underline-amber {
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-repeat: no-repeat;
+  background-position: 0 88%;
+  background-size: 100% 2px;
+  padding-bottom: 2px;
+}
+
+/* ============================================================
+   Surfaces
+   ============================================================ */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+}
+.card-inset {
+  background: var(--surface-2);
+  border: 1px solid var(--rule-soft);
+  border-radius: 6px;
+}
+/* Bordered panel that reads like a printed table cell. */
+.panel {
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: var(--surface);
+}
+.panel-hover { transition: border-color .2s ease, background .2s ease; }
+.panel-hover:hover { border-color: var(--accent); background: var(--accent-wash); }
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+.btn-solid {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+  border-radius: 4px;
+  border: 1px solid var(--accent);
+  transition: background .18s ease, border-color .18s ease;
+}
+.btn-solid:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
+
+.btn-outline {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  background: transparent;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: border-color .18s ease, background .18s ease;
+}
+.btn-outline:hover { border-color: var(--ink); background: var(--surface-2); }
+
+/* A text link that grows a rule on hover. */
+.link-rule {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--accent);
+  font-weight: 600;
+  border-bottom: 1px solid transparent;
+  transition: border-color .18s ease;
+}
+.link-rule:hover { border-bottom-color: var(--accent); }
+
+/* ============================================================
+   Navigation
+   ============================================================ */
+.masthead {
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--rule);
+}
+
+.nav-link {
+  position: relative;
+  font-size: 13.5px;
+  color: var(--ink-2);
+  padding: 6px 0;
+  transition: color .18s ease;
+}
+.nav-link:hover { color: var(--accent); }
+.nav-link::after {
+  content: '';
+  position: absolute; left: 0; right: 100%; bottom: 0;
+  height: 1px; background: var(--accent);
+  transition: right .22s ease;
+}
+.nav-link:hover::after { right: 0; }
+
+/* Dropdown: a plain bordered sheet, no blur theatre. */
+.nav-sheet {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: 0;
+  min-width: 260px;
+  padding: 8px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  box-shadow: 0 12px 30px -18px rgba(28,23,18,.35);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: opacity .18s ease, transform .18s ease, visibility .18s;
+  z-index: 60;
+}
+.nav-sheet.wide { min-width: 460px; }
+.nav-sheet.open { opacity: 1; visibility: visible; transform: none; }
+.nav-sheet-grid { display: grid; grid-template-columns: 1fr; gap: 1px; }
+.nav-sheet.wide .nav-sheet-grid { grid-template-columns: 1fr 1fr; }
+.nav-sheet-item {
+  display: flex; align-items: baseline; gap: 10px;
+  padding: 9px 11px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: var(--ink-2);
+  transition: background .16s ease, color .16s ease;
+}
+.nav-sheet-item:hover { background: var(--accent-wash); color: var(--accent); }
+.nav-sheet-item .idx {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted-2);
+}
+
+/* Mobile drawer — a plain sheet that slides down. */
+.mobile-sheet {
+  transition: opacity .28s ease, transform .28s cubic-bezier(.22,.61,.36,1);
+}
+
+/* ============================================================
+   Rate strip — the one "live" element, kept quiet
+   ============================================================ */
+.rate-strip {
+  background: var(--ink);
+  color: var(--paper);
+  border-bottom: 1px solid var(--rule);
+}
+.rate-strip .rate-item { border-right: 1px solid rgba(255,255,255,.1); }
+
+/* ============================================================
+   Tables that read like a statement
+   ============================================================ */
+.ledger { width: 100%; border-collapse: collapse; }
+.ledger th {
+  text-align: left;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--rule);
+  white-space: nowrap;
+}
+.ledger td {
+  padding: 13px 12px;
+  border-bottom: 1px solid var(--rule-soft);
+  vertical-align: middle;
+}
+.ledger tr:last-child td { border-bottom: 0; }
+.ledger tbody tr { transition: background .16s ease; }
+.ledger tbody tr:hover { background: var(--surface-2); }
+
+/* ============================================================
+   Small pieces
+   ============================================================ */
+.tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 3px;
+  border: 1px solid var(--rule);
+  color: var(--muted);
+  background: var(--surface);
+}
+.tag-accent { border-color: var(--accent); color: var(--accent); background: var(--accent-wash); }
+
+.chip {
+  font-size: 12.5px;
+  padding: 7px 14px;
+  border-radius: 3px;
+  border: 1px solid var(--rule);
+  color: var(--muted);
+  background: transparent;
+  transition: border-color .18s ease, color .18s ease, background .18s ease;
+  white-space: nowrap;
+}
+.chip:hover { border-color: var(--muted-2); color: var(--ink); }
+.chip.active { border-color: var(--accent); color: var(--accent); background: var(--accent-wash); }
+
+/* Quiet grain, only on the masthead hero — texture, not effect. */
+.paper-grain {
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(28,23,18,.05) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+/* Bar chart / sparkline colour hooks used by dashboard SVGs. */
+.stroke-accent { stroke: var(--accent); }
+.fill-accent { fill: var(--accent); }
+
+/* ============================================================
+   Assistant — a plain bordered sheet, same as every other surface
+   ============================================================ */
+.chat-fab {
+  position: fixed; bottom: 20px; right: 20px; z-index: 70;
+  width: 46px; height: 46px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--on-accent);
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  transition: background .18s ease;
+}
+.chat-fab:hover { background: var(--accent-deep); }
+.chat-badge {
+  position: absolute; top: -3px; right: -3px;
+  min-width: 17px; height: 17px; border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; color: #fff;
+  background: var(--down);
+  border: 2px solid var(--paper);
+}
+.chat-panel {
+  position: fixed; bottom: 78px; right: 20px; z-index: 70;
+  width: min(370px, calc(100vw - 32px));
+  height: min(540px, calc(100vh - 130px));
+  display: flex; flex-direction: column;
+  border-radius: 8px; overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  box-shadow: 0 16px 44px -26px rgba(28,23,18,.45);
+}
+.chat-scroll {
+  flex: 1; overflow-y: auto;
+  padding: 16px 14px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.chat-bubble-bot {
+  max-width: 86%;
+  background: var(--surface-2);
+  border: 1px solid var(--rule-soft);
+  border-radius: 6px;
+  padding: 10px 12px;
+  color: var(--ink);
+}
+.chat-bubble-user {
+  max-width: 86%;
+  background: var(--accent);
+  border-radius: 6px;
+  padding: 10px 12px;
+  color: var(--on-accent);
+}
+.chat-chip {
+  font-size: 11.5px; padding: 6px 11px; border-radius: 3px;
+  border: 1px solid var(--rule); color: var(--muted);
+  transition: border-color .18s ease, color .18s ease;
+}
+.chat-chip:hover { border-color: var(--accent); color: var(--accent); }
+.chat-typing { display: flex; align-items: center; gap: 4px; padding: 12px 14px; }
+.chat-typing span {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--muted-2);
+  animation: chatDot 1.2s ease-in-out infinite;
+}
+.chat-typing span:nth-child(2) { animation-delay: .15s; }
+.chat-typing span:nth-child(3) { animation-delay: .3s; }
+@keyframes chatDot {
+  0%, 60%, 100% { opacity: .4; }
+  30% { opacity: 1; }
+}
+@media (max-width: 767px) {
+  .chat-fab { bottom: 76px; }
+  .chat-panel { bottom: 134px; }
+}
