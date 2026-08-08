@@ -1,6 +1,6 @@
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import {
-  Landmark, TrendingUp, Wallet, ArrowUpRight, PiggyBank, Scale,
+  Landmark, TrendingUp, Wallet, ArrowUpRight, CandlestickChart, Scale,
 } from 'lucide-react';
 import PageHeader from './PageHeader.jsx';
 import { fmtUSD, ACCOUNT_META, DashReveal } from '../data.jsx';
@@ -8,7 +8,7 @@ import { useApi } from '../../lib/useApi.js';
 import { fmtDate } from '../../lib/format.js';
 import LoadingScreen from '../../components/ui/LoadingScreen.jsx';
 
-const KIND_ICON = { checking: Wallet, savings: PiggyBank, investment: Landmark };
+const KIND_ICON = { cash: Wallet, brokerage: CandlestickChart, retirement: Landmark };
 
 export default function Portfolio() {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ export default function Portfolio() {
 
   if (!data) return <LoadingScreen inline />;
 
-  const { investments = [], accounts = [], totalPrincipal = 0, totalAccrued = 0, netWorth = 0 } = data;
+  const { investments = [], accounts = [], holdings = [], totalPrincipal = 0, totalAccrued = 0, holdingsValue = 0, totalValue = 0 } = data;
   const returnPct = totalPrincipal > 0 ? (totalAccrued / totalPrincipal) * 100 : 0;
 
   return (
@@ -30,18 +30,18 @@ export default function Portfolio() {
 
       <DashReveal>
         <div className="card rounded-3xl p-6 md:p-8">
-          <p className="text-[11px] uppercase tracking-widest text-[color:var(--muted-2)]">Net worth with Aurivest</p>
+          <p className="text-[11px] uppercase tracking-widest text-[color:var(--muted-2)]">Total portfolio value</p>
           <p className="font-display text-[40px] md:text-[52px] font-semibold leading-none mt-2 text-[color:var(--ink)]">
-            {fmtUSD(netWorth)}
+            {fmtUSD(totalValue)}
           </p>
-          <p className="text-[12px] mt-2 text-[color:var(--muted-2)]">Total account value less outstanding credit.</p>
+          <p className="text-[12px] mt-2 text-[color:var(--muted-2)]">Cash, subscribed products and self-directed positions combined.</p>
 
           <div className="grid sm:grid-cols-3 gap-6 mt-8 pt-6 border-t border-[color:var(--rule-soft)]">
             {[
-              { label: 'Invested principal', value: fmtUSD(totalPrincipal) },
+              { label: 'Subscribed principal', value: fmtUSD(totalPrincipal) },
+              { label: 'Self-directed value', value: fmtUSD(holdingsValue) },
               { label: 'Earned to date', value: `+${fmtUSD(totalAccrued)}`, accent: true },
-              { label: 'Return on invested', value: `${returnPct.toFixed(2)}%`, accent: true },
-            ].map((s) => (
+              ].map((s) => (
               <div key={s.label}>
                 <p className="text-[11px] uppercase tracking-widest text-[color:var(--muted-2)]">{s.label}</p>
                 <p className={`font-mono text-[22px] mt-1.5 ${s.accent ? 'text-[color:var(--up)]' : 'text-[color:var(--ink)]'}`}>{s.value}</p>
@@ -67,7 +67,7 @@ export default function Portfolio() {
                     <p className="text-[13.5px] text-[color:var(--ink)] truncate">{a.name}</p>
                     <p className="text-[11.5px] text-[color:var(--muted-2)]">
                       {meta.label} &middot; ••••{a.number.slice(-4)}
-                      {a.apy > 0 ? ` · ${a.apy.toFixed(2)}% ${a.kind === 'investment' ? 'trailing 1y' : 'APY'}` : ''}
+                      {a.apy > 0 ? ` · ${a.apy.toFixed(2)}% ${a.kind === 'brokerage' ? 'trailing 1y' : 'APY'}` : ''}
                     </p>
                   </div>
                   <span className="font-mono text-[14px] shrink-0 text-[color:var(--ink)]">{fmtUSD(a.balance)}</span>
@@ -81,9 +81,9 @@ export default function Portfolio() {
       <DashReveal delay={110}>
         <div className="card rounded-2xl p-5 md:p-6">
           <div className="flex items-center justify-between mb-4">
-            <p className="font-display text-[16px] font-medium text-[color:var(--ink)]">Holdings</p>
+            <p className="font-display text-[16px] font-medium text-[color:var(--ink)]">Subscribed products</p>
             <button onClick={() => navigate('/dashboard/invest')} className="text-[12px] text-[color:var(--accent-soft)] flex items-center gap-0.5">
-              Add a mandate <ArrowUpRight size={13} />
+              Add a product <ArrowUpRight size={13} />
             </button>
           </div>
 
@@ -91,9 +91,9 @@ export default function Portfolio() {
             <div className="flex flex-col items-center gap-3 py-10 text-center">
               <Scale size={22} className="text-[color:var(--muted-2)]" />
               <p className="text-[13px] max-w-xs text-[color:var(--muted-2)]">
-                No mandates yet. Reserve Savings pays 4.65% with no lock-up — a reasonable first step.
+                Nothing subscribed yet. Cash Management pays 4.65% with no lock-up — a reasonable first step.
               </p>
-              <button onClick={() => navigate('/dashboard/invest')} className="btn-gold text-[12.5px] px-5 py-2.5 mt-1">Browse plans</button>
+              <button onClick={() => navigate('/dashboard/invest')} className="btn-solid text-[12.5px] px-5 py-2.5 mt-1">Browse plans</button>
             </div>
           ) : (
             <>
@@ -102,7 +102,7 @@ export default function Portfolio() {
                 <table className="w-full text-left">
                   <thead>
                     <tr className="text-[10.5px] uppercase tracking-widest text-[color:var(--muted-2)]">
-                      <th className="pb-3 font-normal">Mandate</th>
+                      <th className="pb-3 font-normal">Product</th>
                       <th className="pb-3 font-normal">Rate</th>
                       <th className="pb-3 font-normal">Principal</th>
                       <th className="pb-3 font-normal">Earned</th>

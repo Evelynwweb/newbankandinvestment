@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import {
-  LayoutGrid, Wallet, PiggyBank, CreditCard, Send, Download, Upload,
-  Clock, Users, Settings, Landmark,
+  LayoutGrid, Wallet, PiggyBank, CandlestickChart, Landmark, Send,
+  Download, Upload, Clock, Users, Settings,
 } from 'lucide-react';
 
 /* ============================================================
    Shared dashboard constants + primitives.
-   Account data (balances, cards, investments, transactions…)
+   Account data (balances, positions, subscriptions, activity…)
    comes from the API — see src/lib/api.js and useApi.js.
    ============================================================ */
 export const BRAND = 'Aurivest';
@@ -15,24 +15,23 @@ export const BRAND = 'Aurivest';
 export const NAV_ITEMS = [
   { id: 'dashboard', label: 'Overview', icon: LayoutGrid, path: '/dashboard' },
   { id: 'accounts', label: 'Accounts', icon: Wallet, path: '/dashboard/accounts' },
-  { id: 'transfers', label: 'Transfers', icon: Send, path: '/dashboard/transfers' },
-  { id: 'cards', label: 'Cards', icon: CreditCard, path: '/dashboard/cards' },
   { id: 'invest', label: 'Invest', icon: PiggyBank, path: '/dashboard/invest' },
+  { id: 'holdings', label: 'Holdings', icon: CandlestickChart, path: '/dashboard/holdings' },
   { id: 'portfolio', label: 'Portfolio', icon: Landmark, path: '/dashboard/portfolio' },
-  { id: 'deposit', label: 'Deposit', icon: Download, path: '/dashboard/deposit' },
-  { id: 'withdrawal', label: 'Withdrawal', icon: Upload, path: '/dashboard/withdrawal' },
-  { id: 'loans', label: 'Loans & Credit', icon: Landmark, path: '/dashboard/loans' },
-  { id: 'transactions', label: 'Transactions', icon: Clock, path: '/dashboard/transactions' },
+  { id: 'funding', label: 'Funding', icon: Download, path: '/dashboard/funding' },
+  { id: 'withdrawal', label: 'Withdraw', icon: Upload, path: '/dashboard/withdrawal' },
+  { id: 'transfers', label: 'Transfers', icon: Send, path: '/dashboard/transfers' },
+  { id: 'transactions', label: 'Activity', icon: Clock, path: '/dashboard/transactions' },
   { id: 'referrals', label: 'Referrals', icon: Users, path: '/dashboard/referrals' },
-  { id: 'settings', label: 'Account Settings', icon: Settings, path: '/dashboard/settings' },
+  { id: 'settings', label: 'Settings', icon: Settings, path: '/dashboard/settings' },
 ];
 
 /* Mobile bottom bar — 4 icon-only tabs, capped per fintech nav conventions */
 export const TAB_ITEMS = [
   { id: 'dashboard', label: 'Home', icon: LayoutGrid, path: '/dashboard' },
-  { id: 'accounts', label: 'Accounts', icon: Wallet, path: '/dashboard/accounts' },
-  { id: 'transfers', label: 'Move', icon: Send, path: '/dashboard/transfers' },
   { id: 'invest', label: 'Invest', icon: PiggyBank, path: '/dashboard/invest' },
+  { id: 'holdings', label: 'Holdings', icon: CandlestickChart, path: '/dashboard/holdings' },
+  { id: 'portfolio', label: 'Portfolio', icon: Landmark, path: '/dashboard/portfolio' },
   { id: 'settings', label: 'Account', icon: Settings, path: '/dashboard/settings' },
 ];
 
@@ -47,9 +46,9 @@ export const RISK_COLOR = {
 };
 
 export const ACCOUNT_META = {
-  checking: { label: 'Checking', color: 'var(--accent)' },
-  savings: { label: 'Savings', color: 'var(--accent-deep)' },
-  investment: { label: 'Investment', color: 'var(--accent-warm)' },
+  cash: { label: 'Cash & Liquidity', color: 'var(--accent)' },
+  brokerage: { label: 'Brokerage', color: 'var(--accent-warm)' },
+  retirement: { label: 'Retirement', color: 'var(--gold-leaf)' },
 };
 
 export const SPARK_PATHS = {

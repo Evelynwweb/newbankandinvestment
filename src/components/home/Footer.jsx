@@ -3,41 +3,27 @@ import BrandMark from '../ui/BrandMark.jsx';
 
 /* Colophon — the small print at the foot of the page, set like one. */
 const COLS = [
-  {
-    h: 'Banking',
-    items: [
-      { label: 'Checking', to: '/banking/checking' },
-      { label: 'Savings & CDs', to: '/banking/savings' },
-      { label: 'Cards', to: '/banking/cards' },
-      { label: 'Transfers', to: '/banking/transfers' },
-      { label: 'Loans & Credit', to: '/banking/loans' },
-    ],
-  },
-  {
-    h: 'Investing',
-    items: [
-      { label: 'Managed Portfolios', to: '/investing/managed-portfolios' },
-      { label: 'Bonds & Treasuries', to: '/investing/bonds-treasuries' },
-      { label: 'Retirement & IRAs', to: '/investing/retirement' },
-      { label: 'Wealth Management', to: '/investing/wealth-management' },
-    ],
-  },
-  {
-    h: 'Company',
-    items: [
-      { label: 'About us', to: '/about' },
-      { label: 'Rates', to: '/pricing' },
-      { label: 'Our Partners', to: '/partners' },
-    ],
-  },
-  {
-    h: 'Support',
-    items: [
-      { label: 'Help Center', to: '/resources/help-center' },
-      { label: 'Security Center', to: '/resources/security-center' },
-      { label: 'FAQs', to: '/resources/faqs' },
-    ],
-  },
+  { h: 'Cash & Fixed Income', items: [
+    { label: 'Cash Management', to: '/invest/cash-management' },
+    { label: 'Money Market Funds', to: '/invest/money-market' },
+    { label: 'Treasury Accounts', to: '/invest/treasury' },
+    { label: 'Bond Ladders', to: '/invest/bond-ladders' },
+  ] },
+  { h: 'Portfolios', items: [
+    { label: 'Managed ETF Portfolios', to: '/invest/managed-portfolios' },
+    { label: 'Self-Directed Brokerage', to: '/invest/self-directed' },
+    { label: 'Fractional Shares', to: '/invest/fractional-shares' },
+  ] },
+  { h: 'Retirement & Private', items: [
+    { label: 'Traditional & Roth IRAs', to: '/invest/iras' },
+    { label: '401(k) Rollovers', to: '/invest/rollovers' },
+    { label: 'Trust Services', to: '/invest/trust-services' },
+  ] },
+  { h: 'Support', items: [
+    { label: 'Help Center', to: '/resources/help-center' },
+    { label: 'Security Center', to: '/resources/security-center' },
+    { label: 'FAQs', to: '/resources/faqs' },
+  ] },
 ];
 
 export default function Footer() {

@@ -3,8 +3,8 @@
 
    Active only while VITE_API_URL is unset (see lib/api.js). It answers the
    exact routes the real Aurivest API is expected to expose and persists to
-   localStorage, so every screen — accounts, transfers, cards, investments,
-   loans, KYC — is fully explorable without a server running.
+   localStorage, so every screen — accounts, products, holdings, funding,
+   KYC — is fully explorable without a server running.
 
    Swap in the real backend by setting VITE_API_URL; nothing else changes.
    ============================================================ */
@@ -31,19 +31,68 @@ class MockError extends Error {
 /* ============================================================
    Catalogue — the products the marketing site sells
    ============================================================ */
-export const PLAN_CATALOGUE = [
-  { id: 'reserve', name: 'Reserve Savings', horizon: 'Flexible', termMonths: 0, rate: 4.65, min: 100, risk: 'Insured', blurb: 'High-yield insured savings. Withdraw any day, no penalty.' },
-  { id: 'treasury', name: 'Treasury Ladder', horizon: '6 Months', termMonths: 6, rate: 5.1, min: 1000, risk: 'Very low', blurb: 'A laddered government-bill portfolio rolled every 4 weeks.' },
-  { id: 'balanced', name: 'Balanced Portfolio', horizon: '12 Months', termMonths: 12, rate: 7.8, min: 2500, risk: 'Moderate', blurb: '60/40 global equity and investment-grade credit, rebalanced quarterly.' },
-  { id: 'growth', name: 'Growth Portfolio', horizon: '24 Months', termMonths: 24, rate: 11.2, min: 10000, risk: 'Elevated', blurb: 'Equity-tilted mandate for long-horizon capital with quarterly reviews.' },
-  { id: 'private', name: 'Private Wealth Mandate', horizon: '36 Months', termMonths: 36, rate: 14.5, min: 50000, risk: 'High', blurb: 'Bespoke multi-asset mandate with a named advisor and estate planning.' },
+export const PRODUCT_FAMILIES = [
+  { id: 'cash', name: 'Cash & Liquidity', account: 'cash', blurb: 'Money that has to stay reachable — still earning while it waits.', products: [
+    { id: 'hy-cash', name: 'High-Yield Cash Management', kind: 'yield', rate: 4.65, termMonths: 0, min: 100, risk: 'Very low', blurb: 'Withdraw any day, no penalty. Interest credited monthly.' },
+    { id: 'mmf', name: 'Money Market Fund', kind: 'yield', rate: 5.02, termMonths: 0, min: 1000, risk: 'Very low', blurb: 'A government money market fund, priced daily, settling T+1.' },
+    { id: 'treasury', name: 'Treasury-Backed Account', kind: 'yield', rate: 5.18, termMonths: 3, min: 1000, risk: 'Very low', blurb: 'Held directly in short-dated government bills, rolled at maturity.' },
+  ] },
+  { id: 'fixed-income', name: 'Fixed Income', account: 'brokerage', blurb: 'Predictable income with a defined maturity.', products: [
+    { id: 'bond-ladder', name: 'Bond Ladder', kind: 'yield', rate: 5.45, termMonths: 12, min: 5000, risk: 'Low', blurb: 'Staggered maturities so a rung comes due every quarter.' },
+    { id: 'muni', name: 'Municipal Bonds', kind: 'yield', rate: 4.28, termMonths: 24, min: 10000, risk: 'Low', blurb: 'Investment-grade municipal issues, generally tax-advantaged.' },
+    { id: 'preferred', name: 'Preferred Stock', kind: 'yield', rate: 6.6, termMonths: 12, min: 5000, risk: 'Moderate', blurb: 'Senior to common equity, with a fixed dividend schedule.' },
+  ] },
+  { id: 'portfolios', name: 'Portfolios', account: 'brokerage', blurb: 'ETF-built portfolios, run for you or run by you.', products: [
+    { id: 'core-etf', name: 'Core ETF Portfolio', kind: 'managed', rate: 7.8, termMonths: 12, min: 2500, risk: 'Moderate', blurb: '60/40 global equity and investment-grade credit, rebalanced quarterly.' },
+    { id: 'growth-etf', name: 'Growth ETF Portfolio', kind: 'managed', rate: 11.2, termMonths: 24, min: 10000, risk: 'Elevated', blurb: 'Equity-tilted for capital with a horizon beyond two years.' },
+    { id: 'self-directed', name: 'Self-Directed Brokerage', kind: 'holding', rate: 0, termMonths: 0, min: 500, risk: 'Self-managed', blurb: 'Your own positions, your own calls. Commission-free.' },
+    { id: 'fractional', name: 'Fractional Shares', kind: 'holding', rate: 0, termMonths: 0, min: 5, risk: 'Self-managed', blurb: 'Own a slice of any listed name from five dollars up.' },
+  ] },
+  { id: 'retirement', name: 'Retirement', account: 'retirement', blurb: 'The tax-advantaged wrappers, without the paperwork.', products: [
+    { id: 'trad-ira', name: 'Traditional IRA', kind: 'wrapper', rate: 7.4, termMonths: 0, min: 500, risk: 'Moderate', blurb: 'Pre-tax contributions, taxed on withdrawal.' },
+    { id: 'roth-ira', name: 'Roth IRA', kind: 'wrapper', rate: 7.4, termMonths: 0, min: 500, risk: 'Moderate', blurb: 'Post-tax in, tax-free qualified withdrawals out.' },
+    { id: 'sep-ira', name: 'SEP IRA', kind: 'wrapper', rate: 7.4, termMonths: 0, min: 1000, risk: 'Moderate', blurb: 'For the self-employed, with higher contribution room.' },
+    { id: 'simple-ira', name: 'SIMPLE IRA', kind: 'wrapper', rate: 7.4, termMonths: 0, min: 1000, risk: 'Moderate', blurb: 'A straightforward plan for teams under 100.' },
+    { id: 'rollover-401k', name: '401(k) Rollover', kind: 'wrapper', rate: 7.4, termMonths: 0, min: 0, risk: 'Moderate', blurb: 'We chase the outgoing provider for you.' },
+    { id: 'solo-401k', name: 'Solo 401(k)', kind: 'wrapper', rate: 7.4, termMonths: 0, min: 1000, risk: 'Moderate', blurb: 'For owner-only businesses.' },
+  ] },
+  { id: 'alternatives', name: 'Higher-Yield Add-Ons', account: 'brokerage', blurb: 'Larger returns, wider outcomes. Sized as a slice, never the whole.', products: [
+    { id: 'margin', name: 'Margin Lending', kind: 'facility', rate: 8.75, termMonths: 0, min: 5000, risk: 'High', blurb: 'Borrow against eligible positions from 8.75%.' },
+    { id: 'real-estate', name: 'Private Real Estate', kind: 'yield', rate: 12.4, termMonths: 36, min: 25000, risk: 'High', blurb: 'Income-producing property. Illiquid.' },
+    { id: 'private-credit', name: 'Private Credit', kind: 'yield', rate: 13.8, termMonths: 24, min: 25000, risk: 'High', blurb: 'Direct lending to mid-market borrowers.' },
+    { id: 'crypto', name: 'Crypto Trading & Custody', kind: 'holding', rate: 0, termMonths: 0, min: 100, risk: 'Very high', blurb: 'Major digital assets in segregated custody.' },
+  ] },
+  { id: 'private', name: 'Private Access', account: 'brokerage', premium: true, blurb: 'For situations that have outgrown a product sheet.', products: [
+    { id: 'estate', name: 'Estate Planning Tools', kind: 'wrapper', rate: 0, termMonths: 0, min: 50000, risk: 'n/a', blurb: 'Wills, beneficiary alignment, tax consequences mapped.' },
+    { id: 'trust', name: 'Trust Account Services', kind: 'wrapper', rate: 0, termMonths: 0, min: 100000, risk: 'n/a', blurb: 'Trust formation and administration.' },
+  ] },
 ];
 
-export const LOAN_PRODUCTS = [
-  { id: 'personal', name: 'Personal Loan', apr: 8.9, maxAmount: 50000, termMonths: 36, blurb: 'Fixed-rate, no collateral, funded same day once approved.' },
-  { id: 'auto', name: 'Auto Loan', apr: 6.4, maxAmount: 120000, termMonths: 60, blurb: 'Competitive rates on new and used vehicles up to 7 years old.' },
-  { id: 'mortgage', name: 'Home Mortgage', apr: 5.75, maxAmount: 1500000, termMonths: 360, blurb: '30-year fixed with no lender origination fee on Aurivest accounts.' },
-  { id: 'business', name: 'Business Line', apr: 9.75, maxAmount: 250000, termMonths: 24, blurb: 'Revolving credit that draws and repays with your cash cycle.' },
+const ALL_PRODUCTS = PRODUCT_FAMILIES.flatMap((f) =>
+  f.products.map((p) => ({ ...p, familyId: f.id, familyName: f.name, account: f.account })));
+
+export const INSTRUMENTS = [
+  { symbol: 'VOO', name: 'Vanguard S&P 500 ETF', kind: 'etf', price: 512.40 },
+  { symbol: 'VTI', name: 'Vanguard Total Market ETF', kind: 'etf', price: 284.15 },
+  { symbol: 'AGG', name: 'iShares Core US Aggregate Bond', kind: 'etf', price: 98.72 },
+  { symbol: 'AAPL', name: 'Apple Inc.', kind: 'equity', price: 231.80 },
+  { symbol: 'MSFT', name: 'Microsoft Corp.', kind: 'equity', price: 428.60 },
+  { symbol: 'NVDA', name: 'NVIDIA Corp.', kind: 'equity', price: 138.25 },
+  { symbol: 'BTC', name: 'Bitcoin', kind: 'crypto', price: 68420.00 },
+  { symbol: 'ETH', name: 'Ethereum', kind: 'crypto', price: 3285.50 },
+];
+
+const BANK_INSTRUCTIONS = [
+  { _id: 'wire-usd', label: 'USD domestic wire / ACH', accountName: 'Aurivest Securities LLC — Client Funds',
+    bankName: 'First Meridian Trust', accountNumber: '4402117836', routingNumber: '021000021',
+    swiftCode: 'FMTRUS33', bankAddress: '400 Lexington Avenue, New York, NY 10017, United States',
+    beneficiaryAddress: 'Aurivest Securities LLC, 1 Bay Plaza, Suite 900, New York, NY 10004',
+    currency: 'USD', notes: 'Include your reference in the wire memo so the credit can be matched.' },
+  { _id: 'wire-swift', label: 'International SWIFT', accountName: 'Aurivest Securities LLC — Client Funds',
+    bankName: 'First Meridian Trust', accountNumber: 'GB29FMTR60161331926819', routingNumber: '',
+    swiftCode: 'FMTRGB2L', bankAddress: '18 Threadneedle Street, London EC2R 8AR, United Kingdom',
+    beneficiaryAddress: 'Aurivest Securities LLC, 1 Bay Plaza, Suite 900, New York, NY 10004',
+    currency: 'USD', notes: 'Correspondent charges are shared (SHA). Allow two to four business days.' },
 ];
 
 const SETTINGS = {
@@ -72,9 +121,9 @@ function save(db) {
 /* A ready-to-explore demo account so the dashboard is never empty. */
 function seed() {
   const userId = 'demo-user';
-  const checkingId = 'acct-checking';
-  const savingsId = 'acct-savings';
-  const investId = 'acct-invest';
+  const cashId = 'acct-cash';
+  const brokerageId = 'acct-brokerage';
+  const retirementId = 'acct-retirement';
 
   const db = {
     users: [{
@@ -93,22 +142,27 @@ function seed() {
       createdAt: daysAgo(420),
     }],
     accounts: [
-      { _id: checkingId, userId, kind: 'checking', name: 'Everyday Checking', number: '4820119736', balance: 18452.86, apy: 0.75, openedAt: daysAgo(420) },
-      { _id: savingsId, userId, kind: 'savings', name: 'Reserve Savings', number: '7719038452', balance: 64200.4, apy: 4.65, openedAt: daysAgo(400) },
-      { _id: investId, userId, kind: 'investment', name: 'Wealth Portfolio', number: '9903471182', balance: 128740.15, apy: 9.4, openedAt: daysAgo(360) },
-    ],
-    cards: [
-      { _id: uid(), userId, accountId: checkingId, label: 'Aurivest Reserve', network: 'Visa Infinite', type: 'physical', last4: '4821', expiry: '09/29', frozen: false, monthlyLimit: 12000, spent: 3184.22, color: 'amber' },
-      { _id: uid(), userId, accountId: checkingId, label: 'Online Virtual', network: 'Mastercard', type: 'virtual', last4: '9037', expiry: '02/28', frozen: false, monthlyLimit: 3000, spent: 412.9, color: 'dark' },
+      { _id: cashId, userId, kind: 'cash', name: 'Cash Management', number: '4820119736', balance: 48250.40, apy: 4.65, openedAt: daysAgo(420) },
+      { _id: brokerageId, userId, kind: 'brokerage', name: 'Brokerage Account', number: '7719038452', balance: 96500, apy: 0, openedAt: daysAgo(400) },
+      { _id: retirementId, userId, kind: 'retirement', name: 'Retirement Account', number: '9903471182', balance: 132400, apy: 0, openedAt: daysAgo(360) },
     ],
     investments: [
-      { _id: uid(), userId, planId: 'balanced', planName: 'Balanced Portfolio', principal: 45000, rate: 7.8, termMonths: 12, startedAt: daysAgo(190), maturesAt: daysAhead(175), status: 'active' },
-      { _id: uid(), userId, planId: 'treasury', planName: 'Treasury Ladder', principal: 20000, rate: 5.1, termMonths: 6, startedAt: daysAgo(70), maturesAt: daysAhead(110), status: 'active' },
-      { _id: uid(), userId, planId: 'growth', planName: 'Growth Portfolio', principal: 60000, rate: 11.2, termMonths: 24, startedAt: daysAgo(310), maturesAt: daysAhead(420), status: 'active' },
+      { _id: uid(), userId, planId: 'core-etf', planName: 'Core ETF Portfolio', familyId: 'portfolios', principal: 45000, rate: 7.8, termMonths: 12, startedAt: daysAgo(190), maturesAt: daysAhead(175), status: 'active' },
+      { _id: uid(), userId, planId: 'treasury', planName: 'Treasury-Backed Account', familyId: 'cash', principal: 20000, rate: 5.1, termMonths: 6, startedAt: daysAgo(70), maturesAt: daysAhead(110), status: 'active' },
+      { _id: uid(), userId, planId: 'roth-ira', planName: 'Roth IRA', familyId: 'retirement', principal: 60000, rate: 11.2, termMonths: 24, startedAt: daysAgo(310), maturesAt: daysAhead(420), status: 'active' },
     ],
-    loans: [
-      { _id: uid(), userId, productId: 'auto', product: 'Auto Loan', principal: 32000, apr: 6.4, termMonths: 60, monthlyPayment: 624.11, outstanding: 21440.8, status: 'active', appliedAt: daysAgo(300) },
+    holdings: [
+      { _id: 'h-voo', userId, accountId: brokerageId, symbol: 'VOO', name: 'Vanguard S&P 500 ETF', kind: 'etf', units: 42.5, costBasis: 19800, price: 512.40 },
+      { _id: 'h-aapl', userId, accountId: brokerageId, symbol: 'AAPL', name: 'Apple Inc.', kind: 'equity', units: 60, costBasis: 12400, price: 231.80 },
+      { _id: 'h-btc', userId, accountId: brokerageId, symbol: 'BTC', name: 'Bitcoin', kind: 'crypto', units: 0.42, costBasis: 24100, price: 68420.00 },
     ],
+    bankAccount: {
+      accountName: 'Alexandra Reyes', bankName: 'Pacific Union Bank', accountNumber: '8820114937',
+      routingNumber: '121000358', swiftCode: 'PACUUS6S',
+      bankAddress: '55 Market Street, San Francisco, CA 94105, United States',
+      homeAddress: '1420 Sansome Street, Apt 6B, San Francisco, CA 94111',
+      currency: 'USD', verified: true, updatedAt: daysAgo(38),
+    },
     beneficiaries: [
       { _id: uid(), userId, name: 'Daniel Okafor', bank: 'Chase Bank', number: '5540118293', nickname: 'Rent' },
       { _id: uid(), userId, name: 'Mira Solberg', bank: 'Aurivest', number: '7719038452', nickname: 'Sister' },
@@ -118,16 +172,16 @@ function seed() {
   };
 
   const tx = [
-    { type: 'interest', label: 'Monthly interest', detail: 'Reserve Savings · 4.65% APY', amount: 248.9, status: 'completed', accountId: savingsId, at: 2 },
-    { type: 'card', label: 'Aurivest Reserve card', detail: 'Blue Bottle Coffee · San Francisco', amount: -18.4, status: 'completed', accountId: checkingId, at: 2 },
-    { type: 'transfer', label: 'Transfer to Daniel Okafor', detail: 'Chase Bank ····8293 · Rent', amount: -2400, status: 'completed', accountId: checkingId, at: 4 },
-    { type: 'deposit', label: 'Payroll deposit', detail: 'Northwind Studios · ACH', amount: 8420, status: 'completed', accountId: checkingId, at: 6 },
-    { type: 'investment', label: 'Growth Portfolio', detail: 'Quarterly gain credited', amount: 1682.4, status: 'completed', accountId: investId, at: 9 },
-    { type: 'card', label: 'Online Virtual card', detail: 'Adobe Creative Cloud', amount: -59.99, status: 'completed', accountId: checkingId, at: 12 },
-    { type: 'loan', label: 'Auto loan payment', detail: 'Instalment 41 of 60', amount: -624.11, status: 'completed', accountId: checkingId, at: 14 },
-    { type: 'withdraw', label: 'ATM withdrawal', detail: 'Market St · San Francisco', amount: -300, status: 'completed', accountId: checkingId, at: 18 },
-    { type: 'investment', label: 'Balanced Portfolio', detail: 'Top-up subscription', amount: -5000, status: 'completed', accountId: investId, at: 24 },
-    { type: 'referral', label: 'Referral reward', detail: 'Mira Solberg joined Aurivest', amount: 75, status: 'completed', accountId: checkingId, at: 30 },
+    { type: 'interest', label: 'Monthly interest', detail: 'Cash Management · 4.65% APY', amount: 248.9, status: 'completed', accountId: brokerageId, at: 2 },
+    { type: 'trade', label: 'Buy NVDA', detail: '12.000000 units at $138.25', amount: -1659, status: 'completed', accountId: cashId, at: 4 },
+    { type: 'transfer', label: 'Transfer to Daniel Okafor', detail: 'Chase Bank ····8293 · Rent', amount: -2400, status: 'completed', accountId: cashId, at: 4 },
+    { type: 'deposit', label: 'Payroll deposit', detail: 'Northwind Studios · ACH', amount: 8420, status: 'completed', accountId: cashId, at: 6 },
+    { type: 'investment', label: 'Growth Portfolio', detail: 'Quarterly gain credited', amount: 1682.4, status: 'completed', accountId: retirementId, at: 9 },
+    { type: 'dividend', label: 'VOO distribution', detail: 'Quarterly dividend', amount: 214.8, status: 'completed', accountId: brokerageId, at: 9 },
+    { type: 'investment', label: 'Private Credit', detail: 'Subscribed from Cash Management', amount: -25000, status: 'completed', accountId: cashId, at: 120 },
+    { type: 'withdraw', label: 'ATM withdrawal', detail: 'Market St · San Francisco', amount: -300, status: 'completed', accountId: cashId, at: 18 },
+    { type: 'investment', label: 'Balanced Portfolio', detail: 'Top-up subscription', amount: -5000, status: 'completed', accountId: retirementId, at: 24 },
+    { type: 'referral', label: 'Referral reward', detail: 'Mira Solberg joined Aurivest', amount: 75, status: 'completed', accountId: cashId, at: 30 },
   ];
   db.transactions = tx.map((t) => ({
     _id: uid(), userId, type: t.type, label: t.label, detail: t.detail,
@@ -160,7 +214,7 @@ function requireUser(db, token) {
 }
 
 const accountsOf = (db, userId) => db.accounts.filter((a) => a.userId === userId);
-const primaryAccount = (db, userId) => accountsOf(db, userId).find((a) => a.kind === 'checking');
+const primaryAccount = (db, userId) => accountsOf(db, userId).find((a) => a.kind === 'cash');
 
 function addTx(db, userId, tx) {
   const row = { _id: uid(), userId, status: 'completed', createdAt: now(), ...tx };
@@ -189,25 +243,26 @@ function seriesFor(total, points, drift) {
 
 function overviewFor(db, user) {
   const accts = accountsOf(db, user._id);
-  const checking = accts.find((a) => a.kind === 'checking');
-  const savings = accts.find((a) => a.kind === 'savings');
-  const invest = accts.find((a) => a.kind === 'investment');
+  const cash = accts.find((a) => a.kind === 'cash');
+  const brokerage = accts.find((a) => a.kind === 'brokerage');
+  const retirement = accts.find((a) => a.kind === 'retirement');
   const investments = db.investments.filter((i) => i.userId === user._id && i.status === 'active');
   const totalInvested = round2(investments.reduce((s, i) => s + i.principal, 0));
   const accountValue = round2(accts.reduce((s, a) => s + a.balance, 0));
   const loans = db.loans.filter((l) => l.userId === user._id && l.status === 'active');
 
   const holdings = [
-    { sym: 'Cash & checking', value: round2(checking?.balance || 0), color: 'var(--accent)' },
-    { sym: 'Savings', value: round2(savings?.balance || 0), color: 'var(--accent-deep)' },
-    { sym: 'Investments', value: round2(invest?.balance || 0), color: 'var(--accent-warm)' },
+    { sym: 'Cash & liquidity', value: round2(cash?.balance || 0), color: 'var(--accent)' },
+    { sym: 'Brokerage', value: round2(brokerage?.balance || 0), color: 'var(--accent-warm)' },
+    { sym: 'Retirement', value: round2(retirement?.balance || 0), color: 'var(--gold-leaf)' },
   ].filter((h) => h.value > 0);
 
   return {
     accountValue,
-    balance: round2(checking?.balance || 0),
-    savingsBalance: round2(savings?.balance || 0),
-    investedBalance: round2(invest?.balance || 0),
+    balance: round2(cash?.balance || 0),
+    brokerageBalance: round2(brokerage?.balance || 0),
+    retirementBalance: round2(retirement?.balance || 0),
+    holdingsValue: round2((db.holdings || []).filter((h) => h.userId === user._id).reduce((s, h) => s + h.units * h.price, 0)),
     profitBalance: round2(db.profitBalance?.[user._id] || 0),
     totalInvested,
     activeInvestments: investments.length,
@@ -263,8 +318,8 @@ function route(db, path, method, body, token) {
     };
     db.users.push(user);
     db.accounts.push(
-      { _id: uid(), userId, kind: 'checking', name: 'Everyday Checking', number: acctNumber(), balance: 0, apy: 0.75, openedAt: now() },
-      { _id: uid(), userId, kind: 'savings', name: 'Reserve Savings', number: acctNumber(), balance: 0, apy: 4.65, openedAt: now() },
+      { _id: uid(), userId, kind: 'cash', name: 'Everyday Checking', number: acctNumber(), balance: 0, apy: 0.75, openedAt: now() },
+      { _id: uid(), userId, kind: 'brokerage', name: 'Reserve Savings', number: acctNumber(), balance: 0, apy: 4.65, openedAt: now() },
       { _id: uid(), userId, kind: 'investment', name: 'Wealth Portfolio', number: acctNumber(), balance: 0, apy: 0, openedAt: now() },
     );
     db.profitBalance[userId] = 0;
@@ -341,36 +396,83 @@ function route(db, path, method, body, token) {
   }
 
   /* ---------- cards ---------- */
-  if (url === '/api/cards' && method === 'GET') {
-    const user = requireUser(db, token);
-    return db.cards.filter((c) => c.userId === user._id);
-  }
 
-  if (url === '/api/cards' && method === 'POST') {
-    const user = requireUser(db, token);
-    const account = primaryAccount(db, user._id);
-    const card = {
-      _id: uid(), userId: user._id, accountId: account?._id,
-      label: body.label || 'Virtual card',
-      network: 'Mastercard', type: 'virtual',
-      last4: last4(), expiry: '11/30', frozen: false,
-      monthlyLimit: Number(body.monthlyLimit) || 2000, spent: 0, color: 'dark',
-    };
-    db.cards.push(card);
-    return card;
-  }
 
-  const freezeMatch = url.match(/^\/api\/cards\/([^/]+)\/freeze$/);
-  if (freezeMatch && method === 'PATCH') {
-    const user = requireUser(db, token);
-    const card = db.cards.find((c) => c._id === freezeMatch[1] && c.userId === user._id);
-    if (!card) throw new MockError('Card not found.', 404);
-    card.frozen = !card.frozen;
-    return card;
-  }
 
   /* ---------- investments ---------- */
-  if (url === '/api/investments/plans' && method === 'GET') return PLAN_CATALOGUE;
+  if (url === '/api/investments/families' && method === 'GET') return PRODUCT_FAMILIES;
+  if (url === '/api/investments/products' && method === 'GET') return ALL_PRODUCTS;
+
+  if (url === '/api/holdings/instruments' && method === 'GET') { requireUser(db, token); return INSTRUMENTS; }
+
+  if (url === '/api/holdings' && method === 'GET') {
+    const user = requireUser(db, token);
+    const rows = (db.holdings || []).filter((h) => h.userId === user._id).map((h) => {
+      const mv = round2(h.units * h.price);
+      return { ...h, marketValue: mv, gain: round2(mv - h.costBasis),
+        gainPct: h.costBasis > 0 ? Math.round(((mv - h.costBasis) / h.costBasis) * 10000) / 100 : 0 };
+    });
+    return { holdings: rows, marketValue: round2(rows.reduce((s, h) => s + h.marketValue, 0)),
+      costBasis: round2(rows.reduce((s, h) => s + h.costBasis, 0)) };
+  }
+
+  if (url === '/api/holdings/buy' && method === 'POST') {
+    const user = requireUser(db, token);
+    const inst = INSTRUMENTS.find((i) => i.symbol === String(body.symbol || '').toUpperCase());
+    if (!inst) throw new MockError('We do not carry that symbol.', 404);
+    const cost = round2(body.amount);
+    if (!(cost >= 5)) throw new MockError('The minimum order is $5.', 400);
+    const cash = accountsOf(db, user._id).find((a) => a.kind === 'cash');
+    if (!cash || cash.balance < cost) throw new MockError('Not enough available cash for that order.', 400);
+    const units = cost / inst.price;
+    cash.balance = round2(cash.balance - cost);
+    db.holdings = db.holdings || [];
+    let h = db.holdings.find((x) => x.userId === user._id && x.symbol === inst.symbol);
+    if (h) { h.units += units; h.costBasis = round2(h.costBasis + cost); h.price = inst.price; }
+    else {
+      h = { _id: uid(), userId: user._id, accountId: accountsOf(db, user._id).find((a) => a.kind === 'brokerage')?._id,
+        symbol: inst.symbol, name: inst.name, kind: inst.kind, units, costBasis: cost, price: inst.price };
+      db.holdings.push(h);
+    }
+    addTx(db, user._id, { type: 'trade', label: 'Buy ' + inst.symbol, detail: units.toFixed(6) + ' units', amount: -cost, accountId: cash._id });
+    return h;
+  }
+
+  if (url === '/api/holdings/sell' && method === 'POST') {
+    const user = requireUser(db, token);
+    const h = (db.holdings || []).find((x) => x.userId === user._id && x.symbol === String(body.symbol || '').toUpperCase());
+    if (!h) throw new MockError('You do not hold that symbol.', 404);
+    const units = body.all ? h.units : Number(body.units);
+    if (!(units > 0)) throw new MockError('Enter how many units to sell.', 400);
+    if (units > h.units + 1e-9) throw new MockError('That is more than you hold.', 400);
+    const proceeds = round2(units * h.price);
+    const basisOut = round2(h.costBasis * (units / h.units));
+    const cash = accountsOf(db, user._id).find((a) => a.kind === 'cash');
+    cash.balance = round2(cash.balance + proceeds);
+    h.units -= units;
+    h.costBasis = round2(Math.max(0, h.costBasis - basisOut));
+    if (h.units <= 1e-9) db.holdings = db.holdings.filter((x) => x !== h);
+    addTx(db, user._id, { type: 'trade', label: 'Sell ' + h.symbol, detail: units.toFixed(6) + ' units', amount: proceeds, accountId: cash._id });
+    return { ok: true, proceeds, realised: round2(proceeds - basisOut) };
+  }
+
+  if (url === '/api/bank/instructions' && method === 'GET') {
+    const user = requireUser(db, token);
+    return BANK_INSTRUCTIONS.map((b) => ({ ...b, reference: 'AV-' + (user.referralCode || 'DEMO') }));
+  }
+  if (url === '/api/bank/account' && method === 'GET') {
+    requireUser(db, token);
+    const b = db.bankAccount;
+    return b ? { ...b, accountNumberLast4: String(b.accountNumber).slice(-4), accountNumber: undefined } : null;
+  }
+  if (url === '/api/bank/account' && method === 'PUT') {
+    const user = requireUser(db, token);
+    if (!body.accountName || !body.bankName || !body.accountNumber) throw new MockError('Account name, bank name and account number are required.', 400);
+    if (!body.routingNumber && !body.swiftCode) throw new MockError('Provide a routing number or a SWIFT code.', 400);
+    if (!body.homeAddress) throw new MockError('Your home address is required for the wire.', 400);
+    db.bankAccount = { ...body, verified: false, updatedAt: now() };
+    return publicUser(user);
+  }
 
   if (url === '/api/investments' && method === 'GET') {
     const user = requireUser(db, token);
@@ -380,7 +482,7 @@ function route(db, path, method, body, token) {
 
   if (url === '/api/investments' && method === 'POST') {
     const user = requireUser(db, token);
-    const plan = PLAN_CATALOGUE.find((p) => p.id === body.planId);
+    const plan = ALL_PRODUCTS.find((p) => p.id === (body.productId || body.planId));
     if (!plan) throw new MockError('That plan is no longer available.', 404);
     const amount = Number(body.amount);
     if (!(amount >= plan.min)) throw new MockError(`${plan.name} starts at $${plan.min.toLocaleString()}.`, 400);
@@ -390,7 +492,7 @@ function route(db, path, method, body, token) {
     if (!from || from.balance < amount) throw new MockError('Not enough available balance to fund that.', 400);
 
     from.balance = round2(from.balance - amount);
-    const investAcct = accountsOf(db, user._id).find((a) => a.kind === 'investment');
+    const investAcct = accountsOf(db, user._id).find((a) => a.kind === 'brokerage');
     if (investAcct) investAcct.balance = round2(investAcct.balance + amount);
 
     const inv = {
@@ -457,33 +559,7 @@ function route(db, path, method, body, token) {
   }
 
   /* ---------- loans ---------- */
-  if (url === '/api/loans/products' && method === 'GET') return LOAN_PRODUCTS;
 
-  if (url === '/api/loans' && method === 'GET') {
-    const user = requireUser(db, token);
-    return db.loans.filter((l) => l.userId === user._id);
-  }
-
-  if (url === '/api/loans' && method === 'POST') {
-    const user = requireUser(db, token);
-    const product = LOAN_PRODUCTS.find((p) => p.id === body.productId);
-    if (!product) throw new MockError('Unknown loan product.', 404);
-    const principal = Number(body.amount);
-    if (!(principal > 0) || principal > product.maxAmount) {
-      throw new MockError(`${product.name} is available up to $${product.maxAmount.toLocaleString()}.`, 400);
-    }
-    const termMonths = Number(body.termMonths) || product.termMonths;
-    const r = product.apr / 100 / 12;
-    const monthlyPayment = round2((principal * r) / (1 - Math.pow(1 + r, -termMonths)));
-    const loan = {
-      _id: uid(), userId: user._id, productId: product.id, product: product.name,
-      principal, apr: product.apr, termMonths, monthlyPayment,
-      outstanding: principal, status: 'pending', appliedAt: now(),
-    };
-    db.loans.push(loan);
-    addTx(db, user._id, { type: 'loan', label: `${product.name} application`, detail: `Under review · ${termMonths} months`, amount: 0, status: 'pending' });
-    return loan;
-  }
 
   /* ---------- referrals ---------- */
   if (url === '/api/referrals' && method === 'GET') {

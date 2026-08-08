@@ -38,7 +38,7 @@ export default function Withdrawal() {
 
   if (!data) return <LoadingScreen inline />;
 
-  const accounts = (data.accounts || []).filter((a) => a.kind !== 'investment');
+  const accounts = (data.accounts || []).filter((a) => a.kind !== 'brokerage');
   const source = accounts.find((a) => a._id === accountId) || accounts[0];
   const chosen = METHODS.find((m) => m.id === method) || METHODS[0];
   const amt = Number(amount) || 0;

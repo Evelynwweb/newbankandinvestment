@@ -38,7 +38,7 @@ function BalanceCard({ overview, name, hidden, onToggle }) {
 
           <div className="flex flex-wrap items-center gap-3 mt-4">
             <span className="text-[13px]" style={{ color: 'rgba(251,247,239,.62)' }}>
-              Everyday Checking
+              Cash Management
             </span>
             {pct !== 0 && (
               <span
@@ -87,7 +87,7 @@ function BalanceCard({ overview, name, hidden, onToggle }) {
 /* ---------- supporting figures ---------- */
 function Figures({ overview, hidden, onSweep, sweeping }) {
   const rows = [
-    { label: 'Reserve savings', value: fmtUSD(overview.savingsBalance), note: '4.65% APY', to: '/dashboard/accounts' },
+    { label: 'Brokerage', value: fmtUSD(overview.savingsBalance), note: '4.65% APY', to: '/dashboard/accounts' },
     { label: 'Invested', value: fmtUSD(overview.investedBalance), note: `${overview.activeInvestments} mandates`, to: '/dashboard/portfolio' },
     { label: 'Total with Aurivest', value: fmtUSD(overview.accountValue), note: 'All accounts', to: '/dashboard/portfolio' },
     {

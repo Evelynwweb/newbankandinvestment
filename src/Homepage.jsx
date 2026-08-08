@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  ArrowRight, ArrowUpRight, Check, Plus, Minus, Star, Quote, ChevronDown,
-  Wallet, PiggyBank, Landmark, ShieldCheck, Lock, Fingerprint,
-  Building2, Scale, Clock,
+  ArrowRight, ArrowUpRight, Check, Plus, Minus, Star, Quote,
+  Wallet, Layers, PieChart, Target, Bitcoin, Gem,
+  ShieldCheck, Lock, FileText, Users, Building2, Percent,
 } from 'lucide-react';
 import { Reveal, MaskLines, CountUp, Plate, useInView } from './components/ui/motion.jsx';
 import Navbar from './components/home/Navbar.jsx';
@@ -11,24 +11,20 @@ import Footer from './components/home/Footer.jsx';
 import LandingChatbot from './components/home/LandingChatbot.jsx';
 import GoldDust from './components/home/GoldDust.jsx';
 import CinemaScroll from './components/home/CinemaScroll.jsx';
-import JourneyRail from './components/home/JourneyRail.jsx';
 import './index.css';
 
 /* Unsplash — free for commercial use. Everything renders through <Plate>,
    which falls back to a warm gradient if the CDN ever fails. */
 const IMG = {
-  hero: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?fm=jpg&q=78&w=2100&auto=format&fit=crop',
-  desk: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?fm=jpg&q=74&w=1100&auto=format&fit=crop',
-  advisor: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?fm=jpg&q=74&w=1100&auto=format&fit=crop',
-  vault: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?fm=jpg&q=74&w=1100&auto=format&fit=crop',
+  hero: 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?fm=jpg&q=78&w=2100&auto=format&fit=crop',
+  cash: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?fm=jpg&q=74&w=1100&auto=format&fit=crop',
+  portfolio: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?fm=jpg&q=74&w=1100&auto=format&fit=crop',
+  retirement: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?fm=jpg&q=74&w=1100&auto=format&fit=crop',
   portraitA: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?fm=jpg&q=74&w=500&auto=format&fit=crop',
   portraitB: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?fm=jpg&q=74&w=500&auto=format&fit=crop',
   portraitC: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?fm=jpg&q=74&w=500&auto=format&fit=crop',
 };
 
-/* ============================================================
-   Section scaffold
-   ============================================================ */
 function Section({ no, eyebrow, title, lede, children, className = '', id }) {
   return (
     <section id={id} className={className}>
@@ -37,9 +33,7 @@ function Section({ no, eyebrow, title, lede, children, className = '', id }) {
           <Reveal><p className="section-no md:pt-2">{no}</p></Reveal>
           <div>
             <Reveal><p className="eyebrow">{eyebrow}</p></Reveal>
-            <Reveal delay={80}>
-              <h2 className="display-md mt-5 max-w-2xl">{title}</h2>
-            </Reveal>
+            <Reveal delay={80}><h2 className="display-md mt-5 max-w-2xl">{title}</h2></Reveal>
             {lede && <Reveal delay={140}><p className="lede mt-6 max-w-xl">{lede}</p></Reveal>}
           </div>
         </div>
@@ -50,85 +44,75 @@ function Section({ no, eyebrow, title, lede, children, className = '', id }) {
 }
 
 /* ============================================================
-   HERO — full-bleed cinematic plate
+   HERO
    ============================================================ */
 const HERO_RATES = [
-  ['Reserve Savings', '4.65%'],
-  ['Checking', '0.75%'],
-  ['Treasury Ladder', '5.10%'],
-  ['30-yr Mortgage', '5.75%'],
+  ['Cash Management', '4.65%'],
+  ['Treasury-backed', '5.18%'],
+  ['Core ETF Portfolio', '7.80%'],
+  ['Private Credit', '13.8%'],
 ];
 
 function Hero() {
   const navigate = useNavigate();
   const [failed, setFailed] = useState(false);
-
   return (
     <section className="relative min-h-[100svh] flex flex-col justify-end overflow-hidden" style={{ background: 'var(--noir)' }}>
-      {/* the plate */}
       <div className="absolute inset-0">
         {failed ? (
           <div className="w-full h-full" style={{ background: 'linear-gradient(150deg, #261D13, #100D0A 58%, #1D1811)' }} />
         ) : (
-          <img
-            src={IMG.hero}
-            alt=""
-            onError={() => setFailed(true)}
+          <img src={IMG.hero} alt="" onError={() => setFailed(true)}
             className="w-full h-full object-cover"
-            style={{ animation: 'plateDrift 26s ease-in-out infinite alternate' }}
-          />
+            style={{ animation: 'plateDrift 26s ease-in-out infinite alternate' }} />
         )}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'linear-gradient(180deg, rgba(16,13,10,.82) 0%, rgba(16,13,10,.34) 30%, rgba(16,13,10,.62) 66%, rgba(16,13,10,.96) 100%),' +
-              'linear-gradient(94deg, rgba(16,13,10,.88) 0%, rgba(16,13,10,.4) 55%, rgba(16,13,10,.08) 100%)',
-          }}
-        />
+        <div className="absolute inset-0" style={{
+          background:
+            'linear-gradient(180deg, rgba(16,13,10,.84) 0%, rgba(16,13,10,.36) 30%, rgba(16,13,10,.64) 66%, rgba(16,13,10,.96) 100%),' +
+            'linear-gradient(94deg, rgba(16,13,10,.9) 0%, rgba(16,13,10,.42) 55%, rgba(16,13,10,.1) 100%)',
+        }} />
       </div>
 
       <GoldDust tone="gold" density={9000} intensity={1.1} />
 
-      {/* copy */}
       <div className="relative max-w-[1180px] mx-auto px-5 sm:px-6 w-full pt-36 pb-12">
         <Reveal>
-          <span className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full glass text-[12px]" style={{ color: 'rgba(251,247,239,.85)', borderRadius: 999 }}>
+          <span className="inline-flex items-center gap-2.5 px-4 py-2 glass text-[12px]"
+            style={{ color: 'rgba(251,247,239,.85)', borderRadius: 999 }}>
             <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--gold-leaf)' }} />
-            Bank &amp; Trust &middot; serving 60+ countries since 2019
+            Investment management &middot; $4.2B under administration
           </span>
         </Reveal>
 
         <h1 className="display-xl mt-8 max-w-4xl" style={{ color: '#FDFAF5' }}>
-          <MaskLines lines={['Wealth is not made', 'in a hurry.']} />
+          <MaskLines lines={['Every dollar you own', 'should have a job.']} />
           <span className="block foil mt-1">
-            <MaskLines lines={['It is made on purpose.']} delay={260} />
+            <MaskLines lines={['Give it one.']} delay={260} />
           </span>
         </h1>
 
         <Reveal delay={640}>
-          <p className="mt-8 max-w-xl" style={{ color: 'rgba(251,247,239,.7)', fontSize: 17.5, lineHeight: 1.72 }}>
-            Insured deposits earning 4.65%, portfolios run by a committee that publishes its
-            reasoning, and credit priced in the open.
+          <p className="mt-8 max-w-xl" style={{ color: 'rgba(251,247,239,.72)', fontSize: 17.5, lineHeight: 1.72 }}>
+            Treasuries, bond ladders, ETF portfolios, IRAs, private credit and digital assets —
+            one shelf, every holding and every fee published before you commit.
           </p>
         </Reveal>
 
         <Reveal delay={720}>
           <div className="flex flex-wrap items-center gap-3.5 mt-10">
             <button onClick={() => navigate('/register')} className="btn-gold px-8 py-4">
-              Open an account <ArrowRight size={17} />
+              Start investing <ArrowRight size={17} />
             </button>
             <Link to="/pricing" className="btn-ghost-light px-8 py-4">See every rate</Link>
           </div>
         </Reveal>
       </div>
 
-      {/* frosted rate bar along the foot */}
       <Reveal delay={820}>
         <div className="relative max-w-[1180px] mx-auto px-5 sm:px-6 w-full pb-10">
           <div className="glass px-6 py-5 flex flex-wrap items-center gap-x-10 gap-y-4">
             <span className="text-[10.5px] tracking-[0.2em] uppercase" style={{ color: 'rgba(251,247,239,.45)' }}>
-              Today
+              Target returns
             </span>
             {HERO_RATES.map(([label, value]) => (
               <span key={label} className="flex items-baseline gap-2.5">
@@ -136,9 +120,6 @@ function Hero() {
                 <span className="num text-[16px] font-semibold" style={{ color: 'var(--gold-hi)' }}>{value}</span>
               </span>
             ))}
-            <span className="ml-auto hidden md:flex items-center gap-2 text-[11.5px]" style={{ color: 'rgba(251,247,239,.42)' }}>
-              Scroll <ChevronDown size={14} className="animate-bounce" />
-            </span>
           </div>
         </div>
       </Reveal>
@@ -151,9 +132,9 @@ function Hero() {
    ============================================================ */
 function Seals() {
   const seals = [
-    'FDIC-Insured Deposits', 'SOC 2 Type II Audited', 'ISO 27001 Certified',
-    'GDPR Compliant', 'Equal Housing Lender', 'AML / KYC Compliant',
-    'Independent Custody', '24/7 Fraud Monitoring',
+    'Independent Custody', 'SOC 2 Type II Audited', 'ISO 27001 Certified',
+    'Segregated Client Assets', 'AML / KYC Compliant', 'Published Holdings',
+    'One All-In Advisory Fee', 'Quarterly Committee Notes',
   ];
   const row = [...seals, ...seals];
   return (
@@ -173,58 +154,56 @@ function Seals() {
 }
 
 /* ============================================================
-   Three books
+   The shelf — six families
    ============================================================ */
-const BOOKS = [
-  {
-    icon: Wallet, no: '01', title: 'Bank', img: IMG.desk,
-    body: 'Checking that pays 0.75% on every dollar, instant free transfers between your own accounts, and cards you can freeze in a single tap.',
-    points: ['Paid up to 2 days early', '55,000+ fee-free ATMs', 'No overdraft fee, ever'],
-    to: '/banking/checking',
-  },
-  {
-    icon: PiggyBank, no: '02', title: 'Invest', img: IMG.advisor,
-    body: 'From an insured 4.65% reserve tier to equity-tilted mandates. Every holding and every fee is published before you subscribe — not after.',
-    points: ['Named investment committee', 'Quarterly written reviews', 'From $100'],
-    to: '/investing/managed-portfolios',
-  },
-  {
-    icon: Landmark, no: '03', title: 'Borrow', img: IMG.vault,
-    body: 'Mortgages from 5.75%, personal credit from 8.9%. The monthly payment and total interest over the full term are quoted before you sign.',
-    points: ['No origination fee', 'Same-day personal funding', 'No early repayment penalty'],
-    to: '/banking/loans',
-  },
+const FAMILIES = [
+  { icon: Wallet, no: '01', title: 'Cash & Liquidity', rate: '4.65 – 5.18%',
+    body: 'High-yield cash management, government money market funds and treasury-backed accounts. Where money waits without going backwards.',
+    items: ['Cash management', 'Money market funds', 'Treasury-backed'], to: '/invest/cash-management' },
+  { icon: Layers, no: '02', title: 'Fixed Income', rate: '4.28 – 6.60%',
+    body: 'Bond ladders with a rung due every quarter, investment-grade municipals, and preferred stock for a stated dividend.',
+    items: ['Bond ladders', 'Municipal bonds', 'Preferred stock'], to: '/invest/bond-ladders' },
+  { icon: PieChart, no: '03', title: 'Portfolios', rate: '7.80 – 11.2%',
+    body: 'ETF-built mandates run by a named committee — or run them yourself, commission-free, down to five-dollar fractional slices.',
+    items: ['Managed ETF portfolios', 'Self-directed brokerage', 'Fractional shares'], to: '/invest/managed-portfolios' },
+  { icon: Target, no: '04', title: 'Retirement', rate: 'Tax-advantaged',
+    body: 'Traditional and Roth IRAs, SEP and SIMPLE for the self-employed, 401(k) rollovers chased on your behalf, and Solo 401(k).',
+    items: ['Traditional & Roth IRA', 'SEP & SIMPLE IRA', '401(k) rollover · Solo 401(k)'], to: '/invest/iras' },
+  { icon: Bitcoin, no: '05', title: 'Higher-Yield Add-Ons', rate: '8.75 – 13.8%',
+    body: 'Margin lending against eligible positions, private real estate and credit, and major digital assets in segregated custody.',
+    items: ['Margin lending', 'Private real estate & credit', 'Crypto trading & custody'], to: '/invest/alternatives' },
+  { icon: Gem, no: '06', title: 'Private Access', rate: 'Premium tier',
+    body: 'For situations that have outgrown a product sheet: estate planning tools and trust formation with a named officer.',
+    items: ['Estate planning tools', 'Trust account services'], to: '/invest/trust-services' },
 ];
 
-function ThreeBooks() {
+function Shelf() {
   return (
     <Section
       no="I"
-      eyebrow="What we do"
-      title="Three financial lives, one relationship."
-      lede="Most people keep spending at one bank, savings at another, and investments somewhere they never log into. Held in one place, they can finally be planned as a whole."
+      eyebrow="The shelf"
+      title="Six families. Everything from a treasury bill to private credit."
+      lede="One account reaches all of it. You can hold cash at 4.65% and private credit at 13.8% side by side, and see both on the same statement."
     >
-      <div className="grid md:grid-cols-3 gap-6 mt-14">
-        {BOOKS.map((b, i) => (
-          <Reveal key={b.title} delay={i * 110}>
-            <Link to={b.to} className="card-soft lift overflow-hidden h-full flex flex-col group">
-              <Plate src={b.img} alt="" ratio="16/10" drift />
-              <div className="p-7 flex flex-col flex-1">
-                <div className="flex items-center justify-between">
-                  <b.icon size={21} strokeWidth={1.6} className="text-[color:var(--accent)]" />
-                  <span className="section-no">{b.no}</span>
-                </div>
-                <h3 className="display-sm mt-5 text-[26px]">{b.title}</h3>
-                <p className="text-[14px] leading-[1.7] mt-3 flex-1 text-[color:var(--muted)]">{b.body}</p>
-                <ul className="flex flex-col gap-2.5 mt-6 pt-5 border-t border-[color:var(--rule-soft)]">
-                  {b.points.map((p) => (
-                    <li key={p} className="flex items-start gap-2.5 text-[13px] text-[color:var(--ink-2)]">
-                      <Check size={14} className="text-[color:var(--accent)] shrink-0 mt-0.5" /> {p}
-                    </li>
-                  ))}
-                </ul>
-                <span className="link-rule text-[13px] mt-6 w-fit">Read more <ArrowUpRight size={14} /></span>
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-14">
+        {FAMILIES.map((f, i) => (
+          <Reveal key={f.title} delay={i * 90}>
+            <Link to={f.to} className="card-soft lift h-full p-7 flex flex-col group">
+              <div className="flex items-start justify-between">
+                <f.icon size={21} strokeWidth={1.6} className="text-[color:var(--accent)]" />
+                <span className="section-no">{f.no}</span>
               </div>
+              <h3 className="display-sm mt-5 text-[22px]">{f.title}</h3>
+              <p className="num text-[13px] mt-1.5" style={{ color: 'var(--accent)' }}>{f.rate}</p>
+              <p className="text-[14px] leading-[1.7] mt-4 flex-1 text-[color:var(--muted)]">{f.body}</p>
+              <ul className="flex flex-col gap-2 mt-6 pt-5 border-t border-[color:var(--rule-soft)]">
+                {f.items.map((it) => (
+                  <li key={it} className="flex items-start gap-2.5 text-[13px] text-[color:var(--ink-2)]">
+                    <Check size={14} className="text-[color:var(--accent)] shrink-0 mt-0.5" /> {it}
+                  </li>
+                ))}
+              </ul>
+              <span className="link-rule text-[13px] mt-6 w-fit">Explore <ArrowUpRight size={14} /></span>
             </Link>
           </Reveal>
         ))}
@@ -238,8 +217,8 @@ function ThreeBooks() {
    ============================================================ */
 function Numbers() {
   const stats = [
-    { target: 4.2, decimals: 1, prefix: '$', suffix: 'B', label: 'Client deposits and assets' },
-    { target: 1.4, decimals: 1, suffix: 'M', label: 'Clients worldwide' },
+    { target: 4.2, decimals: 1, prefix: '$', suffix: 'B', label: 'Client assets under administration' },
+    { target: 22, label: 'Products across six families' },
     { target: 60, suffix: '+', label: 'Countries served' },
     { target: 98.6, decimals: 1, suffix: '%', label: 'Client satisfaction' },
   ];
@@ -249,7 +228,7 @@ function Numbers() {
         {stats.map((s, i) => (
           <Reveal key={s.label} delay={i * 90}>
             <p className="display-md foil" style={{ fontSize: 'clamp(32px, 3.4vw, 46px)' }}>
-              <CountUp target={s.target} decimals={s.decimals || 0} prefix={s.prefix || ''} suffix={s.suffix} />
+              <CountUp target={s.target} decimals={s.decimals || 0} prefix={s.prefix || ''} suffix={s.suffix || ''} />
             </p>
             <p className="text-[12.5px] mt-3" style={{ color: 'rgba(246,241,231,.55)' }}>{s.label}</p>
           </Reveal>
@@ -260,26 +239,55 @@ function Numbers() {
 }
 
 /* ============================================================
+   How a portfolio gets built
+   ============================================================ */
+const BUILD = [
+  { no: '01', title: 'Fund the cash account', body: 'Wire in using the details on your dashboard. Cash earns 4.65% from the day it lands, so nothing sits idle while you decide.', img: IMG.cash },
+  { no: '02', title: 'Set the floor', body: 'Treasuries and bond ladders take the part of the portfolio that must not surprise you. Rates are fixed the moment you subscribe.', img: IMG.retirement },
+  { no: '03', title: 'Add the engine', body: 'ETF mandates run by the committee, or your own positions in the brokerage. Every holding and the single all-in fee, published first.', img: IMG.portfolio },
+];
+
+function HowBuilt() {
+  return (
+    <Section no="II" eyebrow="How a portfolio gets built"
+      title="Floor first, engine second, extras last."
+      lede="The order matters more than the picks. We build from the bottom up so the risky sleeve is always a slice you chose, never a position you drifted into.">
+      <div className="flex flex-col gap-6 mt-14">
+        {BUILD.map((s, i) => (
+          <Reveal key={s.no} delay={i * 90}>
+            <div className={`card-soft overflow-hidden grid md:grid-cols-2 ${i % 2 ? 'md:[direction:rtl]' : ''}`}>
+              <Plate src={s.img} alt="" ratio="16/10" drift className="h-full min-h-[220px]" />
+              <div className="p-8 md:p-10 flex flex-col justify-center [direction:ltr]">
+                <span className="section-no">{s.no}</span>
+                <h3 className="display-sm text-[24px] mt-3">{s.title}</h3>
+                <p className="text-[15px] leading-[1.72] mt-4 text-[color:var(--muted)]">{s.body}</p>
+              </div>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+/* ============================================================
    Fees
    ============================================================ */
 function Costs() {
   const rows = [
-    ['Monthly account fee', 'None', true],
-    ['Minimum balance', 'None', true],
-    ['Overdraft fee', 'None', true],
-    ['Domestic transfer (ACH)', 'Free', true],
-    ['Between your own accounts', 'Free, instant', true],
-    ['Card replacement', 'First one free', true],
-    ['Same-day wire', '$15', false],
-    ['International wire', '$25', false],
+    ['Account fee', 'None', true],
+    ['Minimum to open', 'None', true],
+    ['US equity & ETF trades', 'Commission-free', true],
+    ['Fractional orders', 'From $5', true],
+    ['Deposits by wire or ACH', 'Free', true],
+    ['Managed portfolio advisory', 'One all-in rate, shown first', false],
+    ['Margin interest', 'From 8.75% on drawn balance', false],
+    ['Outbound international wire', '$25', false],
   ];
   return (
-    <Section
-      no="II"
-      eyebrow="What it costs"
-      title="The entire fee schedule, on one screen."
-      lede="This is all of it. There is no second page, no asterisk, and nothing deducted quietly from a return before you see it."
-    >
+    <Section no="III" eyebrow="What it costs"
+      title="One page. No second page."
+      lede="Nothing is deducted quietly from a return before you see it. The advisory rate on a managed mandate is stated in full before you subscribe.">
       <Reveal delay={100}>
         <div className="card-soft overflow-hidden mt-14 max-w-3xl">
           <table className="ledger">
@@ -288,7 +296,7 @@ function Costs() {
                 <tr key={label}>
                   <td className="text-[14.5px]">{label}</td>
                   <td className="text-right">
-                    <span className="num text-[14.5px] font-semibold" style={{ color: free ? 'var(--up)' : 'var(--ink)' }}>{value}</span>
+                    <span className="num text-[14px] font-semibold" style={{ color: free ? 'var(--up)' : 'var(--ink)' }}>{value}</span>
                   </td>
                   <td className="w-10 text-right">
                     {free ? <Minus size={14} className="text-[color:var(--up)] inline" />
@@ -310,18 +318,14 @@ function Costs() {
 function Safeguards() {
   const [ref, inView] = useInView(0.3);
   const items = [
-    { icon: ShieldCheck, title: 'Insured deposits', body: 'Deposit balances are insured to the applicable statutory limit — the reserve tier included.' },
-    { icon: Building2, title: 'Segregated assets', body: 'Client securities sit with an independent custodian. They are never on our balance sheet.' },
-    { icon: Fingerprint, title: 'Two-factor everywhere', body: 'Every sign-in, wire and card change is confirmed on a second device before it moves.' },
-    { icon: Scale, title: 'Regulated and audited', body: 'Licensed, AML/KYC compliant, SOC 2 Type II audited and ISO 27001 certified.' },
+    { icon: Building2, title: 'Independent custody', body: 'Client securities and digital assets sit with an independent custodian, segregated and never on our balance sheet.' },
+    { icon: FileText, title: 'Published holdings', body: 'Every mandate discloses its full position list and its single all-in fee before you subscribe.' },
+    { icon: Users, title: 'A committee that signs its work', body: 'Allocation changes come with written reasoning, published every quarter.' },
+    { icon: Lock, title: 'Two-factor on every movement', body: 'Sign-in, subscriptions and withdrawals are all confirmed on a second device.' },
   ];
   return (
-    <Section
-      no="III"
-      eyebrow="Safeguards"
-      title="The boring parts, done properly."
-      lede="A bank earns trust by being predictable. Here is exactly what stands behind the balance on your screen."
-    >
+    <Section no="IV" eyebrow="Safeguards" title="Custody, disclosure, and someone accountable."
+      lede="An investment platform earns trust in three places: where the assets actually sit, what it tells you it owns, and who signs the decisions.">
       <div className="grid lg:grid-cols-[1fr_300px] gap-14 items-center mt-14">
         <div className="grid sm:grid-cols-2 gap-x-12 gap-y-9">
           {items.map((it, i) => (
@@ -338,25 +342,20 @@ function Safeguards() {
             </Reveal>
           ))}
         </div>
-
         <div ref={ref} className="hidden lg:flex justify-center">
           <svg viewBox="0 0 200 220" className="w-[230px]">
             <path d="M100 12 L182 46 V116 c0 44-34 72-82 90 C52 188 18 160 18 116 V46 Z"
               fill="none" stroke="var(--accent)" strokeWidth="1.5"
               className={`ink-path ${inView ? 'in' : ''}`} style={{ '--len': 700 }} />
-            <path d="M100 34 L162 60 V114 c0 34-26 56-62 70 C64 170 38 148 38 114 V60 Z"
-              fill="none" stroke="var(--accent)" strokeWidth="1" opacity="0.35"
-              className={`ink-path ${inView ? 'in' : ''}`} style={{ '--len': 560, transitionDelay: '260ms' }} />
-            <path d="M68 116 L92 142 L136 86"
-              fill="none" stroke="var(--accent)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"
+            <path d="M68 116 L92 142 L136 86" fill="none" stroke="var(--accent)" strokeWidth="3"
+              strokeLinecap="round" strokeLinejoin="round"
               className={`ink-path ${inView ? 'in' : ''}`} style={{ '--len': 140, transitionDelay: '620ms' }} />
           </svg>
         </div>
       </div>
-
       <Reveal delay={240}>
         <div className="flex flex-wrap gap-2.5 mt-12 pt-9 border-t border-[color:var(--rule)]">
-          {['SOC 2 Type II', 'ISO 27001', 'GDPR', 'AML / KYC', 'Equal Housing Lender', 'Independent Custody'].map((c) => (
+          {['SOC 2 Type II', 'ISO 27001', 'GDPR', 'AML / KYC', 'Independent Custody', 'Segregated Assets'].map((c) => (
             <span key={c} className="tag">{c}</span>
           ))}
         </div>
@@ -370,13 +369,12 @@ function Safeguards() {
    ============================================================ */
 function Voices() {
   const quotes = [
-    { quote: 'I moved my whole financial life over in an afternoon. What surprised me was the statement — for the first time I could see spending, savings and investments on one page.', name: 'Sarah Thompson', role: 'Everyday client · 3 years', img: IMG.portraitA },
-    { quote: 'The card controls alone save me a day a month. Per-employee limits, freeze in a tap, and payroll runs from the same screen I check the balance on.', name: 'Michael Chen', role: 'Business banking · 2 years', img: IMG.portraitB },
-    { quote: 'They told me the total cost of the mortgage before I signed anything. My previous bank never managed that in eleven years.', name: 'Amara Okonkwo', role: 'Mortgage client · 1 year', img: IMG.portraitC },
+    { quote: 'I could finally see the treasuries, the ETF mandate and my own stock picks on one statement. That single view changed how I size everything.', name: 'Sarah Thompson', role: 'Managed + self-directed · 3 years', img: IMG.portraitA },
+    { quote: 'They talked me out of putting more into private credit than I should. A firm earning a fee on it told me to take less. That is why I stayed.', name: 'Michael Chen', role: 'Private access · 2 years', img: IMG.portraitB },
+    { quote: 'The 401(k) rollover took one signature. My old provider had been quietly charging me for eleven years and nobody had ever mentioned it.', name: 'Amara Okonkwo', role: 'Retirement · 1 year', img: IMG.portraitC },
   ];
   return (
-    <Section no="IV" eyebrow="In their words" title="What clients actually say."
-      lede="Unedited, from the annual client survey. The rating below is the average across all 1.4 million accounts.">
+    <Section no="V" eyebrow="In their words" title="What investors actually say.">
       <div className="grid md:grid-cols-3 gap-7 mt-14">
         {quotes.map((q, i) => (
           <Reveal key={q.name} delay={i * 110}>
@@ -411,18 +409,18 @@ function Voices() {
    FAQ
    ============================================================ */
 const FAQS = [
-  { q: 'How long does opening an account take?', a: 'About three minutes. Checking, savings and an investment account are opened together, and you can use them straight away. Identity verification is only required before your first withdrawal.' },
-  { q: 'Is my money actually safe?', a: 'Deposit balances are insured to the applicable statutory limit, client securities are held by an independent custodian rather than on our balance sheet, and every payment leaving the bank is screened in real time. Investment products are separate: they are not deposits, are not insured, and may lose value.' },
-  { q: 'What is the catch with 4.65%?', a: 'There is not one, but there is a caveat worth stating plainly: it is a variable rate, so it can move. There is no lock-up, no minimum, and no teaser period that quietly expires after six months.' },
-  { q: 'How fast are transfers?', a: 'Between your own Aurivest accounts, instantly and free, any hour of any day. Domestic ACH is free and settles in one to two business days. Same-day wires are $15 if sent before the cut-off.' },
-  { q: 'Can I take my money out whenever I want?', a: 'Yes, with no exit fee. Flexible products pay out immediately. Fixed-term mandates pay at maturity, or sooner at the current value of the underlying holdings if you need them early.' },
-  { q: 'Who decides what the portfolios hold?', a: 'A named investment committee that publishes its allocation and its reasoning every quarter. You can read the current holdings and the all-in fee before you subscribe to anything.' },
+  { q: 'What is the minimum to start?', a: 'Nothing to open the account, and five dollars to buy your first fractional position. Cash Management starts at $100, managed ETF portfolios at $2,500, and private credit at $25,000 — each product states its own minimum before you subscribe.' },
+  { q: 'Are the target returns guaranteed?', a: 'No. Cash and treasury products pay a stated rate that can move. Everything market-linked — ETF mandates, preferred stock, private credit, crypto — carries a target, not a promise, and can lose value. The risk band is printed next to every product.' },
+  { q: 'Where are my assets actually held?', a: 'With an independent custodian, segregated from our own balance sheet and from other clients. If Aurivest disappeared tomorrow, your securities and digital assets would still be yours, held by someone else.' },
+  { q: 'Can I run my own positions alongside a managed mandate?', a: 'Yes, and most clients do. The self-directed brokerage sits in the same account as the managed sleeves, so you see the committee’s positions and your own on one statement.' },
+  { q: 'How do I get money in and out?', a: 'By bank wire or ACH. Your dashboard shows the receiving details and a reference unique to you. Withdrawals go back to the bank account you save in Settings, which we verify once before the first payout.' },
+  { q: 'What does the advisory fee actually cost?', a: 'One all-in rate per managed mandate, shown in full on the product before you subscribe. There is no performance fee, no platform fee stacked on top, and no commission on US equity and ETF trades.' },
 ];
 
 function Faq() {
   const [open, setOpen] = useState(0);
   return (
-    <Section no="V" eyebrow="Questions" title="The things people ask before they move.">
+    <Section no="VI" eyebrow="Questions" title="What investors ask before they move.">
       <div className="mt-14 max-w-3xl border-t border-[color:var(--rule)]">
         {FAQS.map((f, i) => (
           <div key={f.q} className="acc-item">
@@ -452,43 +450,44 @@ function Closing() {
     <section className="noir relative overflow-hidden">
       <GoldDust tone="gold" density={11000} intensity={1} />
       <div className="relative max-w-[1180px] mx-auto px-5 sm:px-6 py-24 md:py-36 text-center">
-        <Reveal>
-          <p className="eyebrow eyebrow-gold eyebrow-bare">Open an account</p>
-        </Reveal>
+        <Reveal><p className="eyebrow eyebrow-gold eyebrow-bare">Open an account</p></Reveal>
         <h2 className="display-lg mt-7 max-w-3xl mx-auto" style={{ color: '#FBF7EF' }}>
-          <MaskLines lines={['Three minutes now.']} />
-          <span className="foil block mt-1"><MaskLines lines={['Compounding from tomorrow.']} delay={140} /></span>
+          <MaskLines lines={['Three minutes to open.']} />
+          <span className="foil block mt-1"><MaskLines lines={['Decades to compound.']} delay={140} /></span>
         </h2>
         <Reveal delay={420}>
           <p className="mt-8 max-w-lg mx-auto" style={{ color: 'rgba(246,241,231,.62)', fontSize: 17, lineHeight: 1.72 }}>
-            No monthly fee, no minimum balance, and 4.65% on your reserve from the day the money lands.
+            No account fee, no minimum to open, and 4.65% on cash from the day it lands.
           </p>
         </Reveal>
         <Reveal delay={500}>
           <div className="flex flex-wrap items-center justify-center gap-4 mt-11">
             <button onClick={() => navigate('/register')} className="btn-gold px-9 py-4">
-              Open an account <ArrowRight size={17} />
+              Start investing <ArrowRight size={17} />
             </button>
             <button onClick={() => navigate('/login')} className="btn-ghost-light px-9 py-4">Sign in</button>
           </div>
         </Reveal>
         <Reveal delay={580}>
           <div className="flex flex-wrap items-center justify-center gap-7 mt-12 pt-9" style={{ borderTop: '1px solid var(--noir-rule)' }}>
-            {[[Lock, 'Bank-grade encryption'], [ShieldCheck, 'Insured deposits'], [Clock, '24/7 human support']].map(([Icon, label]) => (
+            {[[Building2, 'Independent custody'], [Percent, 'One all-in fee'], [FileText, 'Holdings published']].map(([Icon, label]) => (
               <span key={label} className="flex items-center gap-2 text-[12.5px]" style={{ color: 'rgba(246,241,231,.5)' }}>
                 <Icon size={14} strokeWidth={1.7} style={{ color: 'var(--gold-leaf)' }} /> {label}
               </span>
             ))}
           </div>
         </Reveal>
+        <Reveal delay={640}>
+          <p className="text-[11.5px] mt-9 max-w-2xl mx-auto leading-relaxed" style={{ color: 'rgba(246,241,231,.36)' }}>
+            Investments are not deposits, are not insured, and may lose value. Target returns are
+            objectives, not guarantees. Past performance does not indicate future results.
+          </p>
+        </Reveal>
       </div>
     </section>
   );
 }
 
-/* ============================================================
-   Page
-   ============================================================ */
 export default function Homepage() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -498,10 +497,10 @@ export default function Homepage() {
       <main>
         <Hero />
         <Seals />
-        <ThreeBooks />
+        <Shelf />
         <CinemaScroll onNavigate={navigate} />
         <Numbers />
-        <JourneyRail />
+        <HowBuilt />
         <Costs />
         <Safeguards />
         <Voices />

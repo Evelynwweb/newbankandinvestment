@@ -31,7 +31,7 @@ export default function DashboardLayout() {
   const bumpWallet = () => setWalletVersion((v) => v + 1);
 
   const { data: accountData } = useApi('/api/accounts', [walletVersion]);
-  const checkingBalance = accountData?.accounts?.find((a) => a.kind === 'checking')?.balance ?? 0;
+  const checkingBalance = accountData?.accounts?.find((a) => a.kind === 'cash')?.balance ?? 0;
 
   /* Light is the default; the toggle stores an override that then wins.
      The attribute sits on <html> so fixed overlays pick it up too, and is
