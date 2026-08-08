@@ -105,7 +105,7 @@ export function useInViewReveal(threshold = 0.15) {
 export function DashReveal({ children, delay = 0, className = '' }) {
   const [ref, inView] = useInViewReveal();
   return (
-    <div ref={ref} className={`reveal ${inView ? 'in' : ''} ${className}`} style={delay ? { transitionDelay: `${delay}ms` } : undefined}>
+    <div ref={ref} className={`rise ${inView ? 'in' : ''} ${className}`} style={delay ? { transitionDelay: `${delay}ms` } : undefined}>
       {children}
     </div>
   );

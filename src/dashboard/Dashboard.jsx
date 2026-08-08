@@ -25,54 +25,60 @@ function BalanceCard({ overview, name, hidden, onToggle }) {
 
   return (
     <div className="dash-balance">
-      <div className="relative flex items-start justify-between gap-4">
+      <span className="dash-balance-mark" aria-hidden="true">A</span>
+
+      <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-[11px] tracking-[0.16em] uppercase opacity-60">
-            Available balance &middot; Everyday Checking
+          <p className="text-[10.5px] tracking-[0.2em] uppercase" style={{ color: 'rgba(251,247,239,.5)' }}>
+            Available balance
           </p>
-          <p className="dash-balance-figure text-[40px] sm:text-[52px] font-semibold mt-3">
+          <p className="dash-balance-figure text-[46px] sm:text-[62px] mt-3.5">
             {hidden ? '••••••' : fmtUSD(overview.balance)}
           </p>
-          <p className="text-[13px] mt-3 opacity-70">
-            Good afternoon, {name?.split(' ')[0] || 'there'}
+
+          <div className="flex flex-wrap items-center gap-3 mt-4">
+            <span className="text-[13px]" style={{ color: 'rgba(251,247,239,.62)' }}>
+              Everyday Checking
+            </span>
             {pct !== 0 && (
-              <span className="ml-2 num" style={{ color: pct >= 0 ? 'var(--up)' : 'var(--down)' }}>
-                {pct >= 0 ? '+' : ''}{pct}% this month
+              <span
+                className="inline-flex items-center gap-1.5 num text-[12px] px-2.5 py-1 rounded-full"
+                style={{
+                  color: pct >= 0 ? '#7BE0A6' : '#F1978E',
+                  background: pct >= 0 ? 'rgba(123,224,166,.11)' : 'rgba(241,151,142,.11)',
+                }}
+              >
+                {pct >= 0 ? '▲' : '▼'} {Math.abs(pct)}% this month
               </span>
             )}
-          </p>
+          </div>
         </div>
+
         <button
           onClick={onToggle}
           aria-label={hidden ? 'Show balances' : 'Hide balances'}
-          className="shrink-0 p-2 rounded border border-white/20 hover:border-white/50 transition-colors"
+          className="dash-balance-btn shrink-0"
+          style={{ padding: '9px 12px' }}
         >
           {hidden ? <Eye size={15} /> : <EyeOff size={15} />}
         </button>
       </div>
 
-      <div className="dash-balance-rule my-6" />
+      <div className="dash-balance-rule my-7" />
 
-      <div className="relative flex flex-wrap items-center gap-2.5">
-        <button
-          onClick={() => navigate('/dashboard/transfers')}
-          className="btn-solid text-[13px] px-5 py-2.5"
-          style={{ background: 'var(--accent-warm)', borderColor: 'var(--accent-warm)', color: '#23180C' }}
-        >
+      <div className="flex flex-wrap items-center gap-2.5">
+        <button onClick={() => navigate('/dashboard/transfers')} className="dash-balance-btn primary">
           <Send size={14} /> Move money
         </button>
-        <button
-          onClick={() => navigate('/dashboard/deposit')}
-          className="text-[13px] px-5 py-2.5 rounded border border-white/25 hover:border-white/60 transition-colors flex items-center gap-2"
-        >
+        <button onClick={() => navigate('/dashboard/deposit')} className="dash-balance-btn">
           <Download size={14} /> Deposit
         </button>
-        <button
-          onClick={() => navigate('/dashboard/withdrawal')}
-          className="text-[13px] px-5 py-2.5 rounded border border-white/25 hover:border-white/60 transition-colors flex items-center gap-2"
-        >
+        <button onClick={() => navigate('/dashboard/withdrawal')} className="dash-balance-btn">
           <Upload size={14} /> Withdraw
         </button>
+        <span className="ml-auto hidden sm:block text-[12px]" style={{ color: 'rgba(251,247,239,.4)' }}>
+          Good afternoon, {name?.split(' ')[0] || 'there'}
+        </span>
       </div>
     </div>
   );

@@ -43,24 +43,38 @@ The routes the backend must implement are the ones handled in `src/lib/mockApi.j
 `/api/dashboard/overview`, accounts, transfers, cards, investments, portfolio, transactions,
 deposits, withdrawals, loans, referrals, profile and KYC.
 
-## Design system — "Ledger"
+## Design system — "Atelier"
 
-A warm editorial system: ivory paper, hairline rules, a serif masthead, flat
-surfaces. Nothing glows, tilts or floats, and the only motion is one short
-fade-and-rise. Tokens live in `src/index.css`; the dashboard and auth shells
-stamp `data-dash-theme` on `<html>` to switch to the dark variant.
+Warm ivory paper carries the argument; deep noir bands carry the drama;
+champagne gold marks the moments that matter. Tokens live in `src/index.css`;
+the dashboard and auth shells stamp `data-dash-theme` on `<html>` for the dark variant.
 
 | Token | Light | Role |
 | --- | --- | --- |
-| `--paper` / `--paper-2` | `#FAF6EF` / `#F2EBDD` | page and inset backgrounds |
-| `--surface` / `--surface-2` | `#FFFFFF` / `#F7F1E7` | cards |
-| `--rule` / `--rule-soft` | `#E4D9C5` / `#EFE7D8` | hairlines |
-| `--ink` / `--ink-2` | `#1C1712` / `#3D342A` | primary and secondary text |
-| `--muted` / `--muted-2` | `#6E6153` / `#9A8B79` | supporting and faint text |
-| `--accent` | `#B45309` | the amber the whole brand rests on |
-| `--on-accent` | `#FFF8EE` | text sitting on an amber fill |
+| `--paper` / `--paper-2` | `#FBF8F3` / `#F3ECE0` | page and inset backgrounds |
+| `--surface` / `--surface-2` | `#FFFFFF` / `#F8F3EA` | cards |
+| `--rule` / `--rule-soft` | `#E6DBC7` / `#F1E9DB` | hairlines |
+| `--ink` / `--ink-2` | `#17130E` / `#3A322A` | primary and secondary text |
+| `--accent` | `#B45309` | the amber the brand rests on |
+| `--noir` / `--gold-leaf` | `#0F0C08` / `#D8B475` | cinematic bands and the gold used on them |
 
 Typography: **Fraunces** (display serif), **Inter** (body), **JetBrains Mono** (figures).
+
+### Signature pieces
+
+- `components/home/GoldDust.jsx` — canvas mote field that links into a faint
+  constellation and parts around the pointer. Pauses off-screen; renders one
+  static frame under `prefers-reduced-motion`.
+- `components/home/FlapBoard.jsx` — split-flap rate board. Characters shuffle,
+  then land, a beat after the board scrolls into view.
+- `components/home/GrowthStory.jsx` — the pinned scroll story. A compounding
+  curve inks itself across four viewport-heights while the balance climbs and
+  captions hand over.
+- `components/home/JourneyRail.jsx` — horizontal rail of five life moments,
+  driven by vertical scroll so it never traps the page.
+
+All motion is plain IntersectionObserver + rAF — no animation library. `useInView`
+carries a 2.5s failsafe so a background tab can never leave the page at opacity 0.
 
 ## Structure
 
