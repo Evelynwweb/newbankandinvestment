@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import {
-  Download, Upload, ArrowLeftRight, Percent, Landmark, CreditCard,
+  Download, Upload, CandlestickChart, Percent, Landmark,
   Gift, Users, Search, FileDown,
 } from 'lucide-react';
 import PageHeader from './PageHeader.jsx';
@@ -11,23 +11,23 @@ import { fmtDateTime, fmtSigned } from '../../lib/format.js';
 import LoadingScreen from '../../components/ui/LoadingScreen.jsx';
 
 const TYPE_ICON = {
-  deposit: Download, withdraw: Upload, transfer: ArrowLeftRight, interest: Percent,
-  investment: Landmark, card: CreditCard, loan: Landmark, bonus: Gift, referral: Users,
+  deposit: Download, withdraw: Upload, trade: CandlestickChart, interest: Percent,
+  dividend: Percent, investment: Landmark, bonus: Gift, referral: Users,
 };
 const TYPE_COLOR = {
-  deposit: 'var(--up)', withdraw: 'var(--accent-deep)', transfer: 'var(--accent)',
-  interest: 'var(--up)', investment: 'var(--accent-warm)', card: 'var(--muted)',
-  loan: 'var(--accent-deep)', bonus: 'var(--up)', referral: 'var(--up)',
+  deposit: 'var(--up)', withdraw: 'var(--accent-deep)', trade: 'var(--accent)',
+  interest: 'var(--up)', dividend: 'var(--up)', investment: 'var(--accent-warm)',
+  bonus: 'var(--up)', referral: 'var(--up)',
 };
 
 const FILTERS = [
   { id: 'all', label: 'All' },
   { id: 'deposit', label: 'Deposits' },
   { id: 'withdraw', label: 'Withdrawals' },
-  { id: 'transfer', label: 'Transfers' },
-  { id: 'card', label: 'Card' },
-  { id: 'interest', label: 'Interest' },
+  { id: 'trade', label: 'Trades' },
   { id: 'investment', label: 'Investments' },
+  { id: 'interest', label: 'Interest' },
+  { id: 'referral', label: 'Referral' },
 ];
 
 /* Escape a CSV cell — quotes doubled, whole field quoted. */
@@ -72,8 +72,8 @@ export default function TransactionHistory() {
     <>
       <PageHeader
         eyebrow="History"
-        title="Transactions"
-        subtitle="Every movement across your accounts, searchable and exportable."
+        title="Activity"
+        subtitle="Every movement across your accounts — searchable and exportable."
       >
         <button onClick={exportCsv} className="btn-ghost text-[12.5px] px-4 py-2.5 flex items-center gap-1.5">
           <FileDown size={14} /> Export CSV

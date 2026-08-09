@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import {
-  LayoutGrid, Wallet, PiggyBank, CandlestickChart, Landmark, Send,
-  Download, Upload, Clock, Users, Settings,
+  LayoutGrid, Wallet, PiggyBank, Download, Upload,
+  Clock, Users, Settings,
 } from 'lucide-react';
 
 /* ============================================================
@@ -14,25 +14,22 @@ export const BRAND = 'Aurivest';
 /* Sidebar / drawer navigation — maps 1:1 to the dashboard routes in App.jsx */
 export const NAV_ITEMS = [
   { id: 'dashboard', label: 'Overview', icon: LayoutGrid, path: '/dashboard' },
-  { id: 'accounts', label: 'Accounts', icon: Wallet, path: '/dashboard/accounts' },
+  { id: 'account', label: 'Account', icon: Wallet, path: '/dashboard/account' },
   { id: 'invest', label: 'Invest', icon: PiggyBank, path: '/dashboard/invest' },
-  { id: 'holdings', label: 'Holdings', icon: CandlestickChart, path: '/dashboard/holdings' },
-  { id: 'portfolio', label: 'Portfolio', icon: Landmark, path: '/dashboard/portfolio' },
   { id: 'funding', label: 'Funding', icon: Download, path: '/dashboard/funding' },
-  { id: 'withdrawal', label: 'Withdraw', icon: Upload, path: '/dashboard/withdrawal' },
-  { id: 'transfers', label: 'Transfers', icon: Send, path: '/dashboard/transfers' },
-  { id: 'transactions', label: 'Activity', icon: Clock, path: '/dashboard/transactions' },
-  { id: 'referrals', label: 'Referrals', icon: Users, path: '/dashboard/referrals' },
+  { id: 'withdrawal', label: 'Withdrawal', icon: Upload, path: '/dashboard/withdrawal' },
+  { id: 'activity', label: 'Activity', icon: Clock, path: '/dashboard/activity' },
+  { id: 'referral', label: 'Referral', icon: Users, path: '/dashboard/referral' },
   { id: 'settings', label: 'Settings', icon: Settings, path: '/dashboard/settings' },
 ];
 
 /* Mobile bottom bar — 4 icon-only tabs, capped per fintech nav conventions */
 export const TAB_ITEMS = [
-  { id: 'dashboard', label: 'Home', icon: LayoutGrid, path: '/dashboard' },
+  { id: 'dashboard', label: 'Overview', icon: LayoutGrid, path: '/dashboard' },
   { id: 'invest', label: 'Invest', icon: PiggyBank, path: '/dashboard/invest' },
-  { id: 'holdings', label: 'Holdings', icon: CandlestickChart, path: '/dashboard/holdings' },
-  { id: 'portfolio', label: 'Portfolio', icon: Landmark, path: '/dashboard/portfolio' },
-  { id: 'settings', label: 'Account', icon: Settings, path: '/dashboard/settings' },
+  { id: 'funding', label: 'Fund', icon: Download, path: '/dashboard/funding' },
+  { id: 'activity', label: 'Activity', icon: Clock, path: '/dashboard/activity' },
+  { id: 'settings', label: 'Settings', icon: Settings, path: '/dashboard/settings' },
 ];
 
 export const RANGE_LABELS = { '1D': 'Daily', '1W': 'Weekly', '1M': 'Monthly', '1Y': 'Yearly' };

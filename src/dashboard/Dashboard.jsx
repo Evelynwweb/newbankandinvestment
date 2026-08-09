@@ -67,10 +67,10 @@ function BalanceCard({ overview, name, hidden, onToggle }) {
       <div className="dash-balance-rule my-7" />
 
       <div className="flex flex-wrap items-center gap-2.5">
-        <button onClick={() => navigate('/dashboard/transfers')} className="dash-balance-btn primary">
-          <Send size={14} /> Move money
+        <button onClick={() => navigate('/dashboard/invest')} className="dash-balance-btn primary">
+          <PiggyBank size={14} /> Invest
         </button>
-        <button onClick={() => navigate('/dashboard/deposit')} className="dash-balance-btn">
+        <button onClick={() => navigate('/dashboard/funding')} className="dash-balance-btn">
           <Download size={14} /> Deposit
         </button>
         <button onClick={() => navigate('/dashboard/withdrawal')} className="dash-balance-btn">
@@ -84,49 +84,24 @@ function BalanceCard({ overview, name, hidden, onToggle }) {
   );
 }
 
-/* ---------- supporting figures ---------- */
-function Figures({ overview, hidden, onSweep, sweeping }) {
+/* ---------- the three headline figures ---------- */
+function Figures({ overview, hidden }) {
   const rows = [
-    { label: 'Brokerage', value: fmtUSD(overview.savingsBalance), note: '4.65% APY', to: '/dashboard/accounts' },
-    { label: 'Invested', value: fmtUSD(overview.investedBalance), note: `${overview.activeInvestments} mandates`, to: '/dashboard/portfolio' },
-    { label: 'Total with Aurivest', value: fmtUSD(overview.accountValue), note: 'All accounts', to: '/dashboard/portfolio' },
-    {
-      label: 'Earnings wallet',
-      value: fmtUSD(overview.profitBalance),
-      note: overview.profitBalance >= 0.01 ? 'Ready to sweep' : 'Nothing yet',
-      action: overview.profitBalance >= 0.01 ? onSweep : null,
-      busy: sweeping,
-    },
+    { label: 'Total profit', value: overview.totalProfit, note: 'Interest, dividends and accrued returns', to: '/dashboard/activity', tone: 'var(--up)' },
+    { label: 'Total deposits', value: overview.totalDeposits, note: 'Confirmed on-chain and credited', to: '/dashboard/funding' },
+    { label: 'Total investment', value: overview.totalInvestment, note: 'Subscribed products and positions', to: '/dashboard/invest' },
   ];
-
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-      {rows.map((r) => {
-        const body = (
-          <>
-            <p className="text-[10.5px] tracking-[0.14em] uppercase text-[color:var(--muted-2)]">{r.label}</p>
-            <p className="num text-[20px] mt-2">{hidden ? '••••' : r.value}</p>
-            <p className="text-[11.5px] mt-1 text-[color:var(--muted-2)]">{r.note}</p>
-          </>
-        );
-        if (r.action) {
-          return (
-            <div key={r.label} className="dash-figure">
-              {body}
-              <button
-                onClick={r.action}
-                disabled={r.busy}
-                className="link-rule text-[12px] mt-2.5 disabled:opacity-50"
-              >
-                {r.busy ? 'Moving…' : 'Move to checking'} <ArrowUpRight size={12} />
-              </button>
-            </div>
-          );
-        }
-        return (
-          <Link key={r.label} to={r.to} className="dash-figure block">{body}</Link>
-        );
-      })}
+    <div className="grid sm:grid-cols-3 gap-3">
+      {rows.map((r) => (
+        <Link key={r.label} to={r.to} className="dash-figure block">
+          <p className="text-[10.5px] tracking-[0.14em] uppercase text-[color:var(--muted-2)]">{r.label}</p>
+          <p className="num text-[24px] mt-2.5" style={{ color: r.tone || 'var(--ink)' }}>
+            {hidden ? '••••••' : fmtUSD(r.value || 0)}
+          </p>
+          <p className="text-[11.5px] mt-1.5 text-[color:var(--muted-2)]">{r.note}</p>
+        </Link>
+      ))}
     </div>
   );
 }
@@ -220,7 +195,7 @@ function Activity({ activity }) {
     <div className="card">
       <div className="flex items-center justify-between px-5 py-4 border-b border-[color:var(--rule)]">
         <p className="font-display text-[16px] font-semibold">Recent activity</p>
-        <button onClick={() => navigate('/dashboard/transactions')} className="link-rule text-[12.5px]">
+        <button onClick={() => navigate('/dashboard/activity')} className="link-rule text-[12.5px]">
           View all <ChevronRight size={13} />
         </button>
       </div>
@@ -302,7 +277,7 @@ export default function Dashboard() {
           title="Balance running low"
           message="Add funds to keep payments and transfers flowing."
           ctaLabel="Deposit"
-          onCta={() => navigate('/dashboard/deposit')}
+          onCta={() => navigate('/dashboard/funding')}
         />
       )}
 
@@ -316,7 +291,7 @@ export default function Dashboard() {
       </DashReveal>
 
       <DashReveal delay={60}>
-        <Figures overview={overview} hidden={hidden} onSweep={sweep} sweeping={sweeping} />
+        <Figures overview={overview} hidden={hidden} />
       </DashReveal>
 
       <DashReveal delay={100} className="grid lg:grid-cols-[1.6fr_1fr] gap-4">

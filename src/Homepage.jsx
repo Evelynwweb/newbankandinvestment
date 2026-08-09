@@ -413,7 +413,7 @@ const FAQS = [
   { q: 'Are the target returns guaranteed?', a: 'No. Cash and treasury products pay a stated rate that can move. Everything market-linked — ETF mandates, preferred stock, private credit, crypto — carries a target, not a promise, and can lose value. The risk band is printed next to every product.' },
   { q: 'Where are my assets actually held?', a: 'With an independent custodian, segregated from our own balance sheet and from other clients. If Aurivest disappeared tomorrow, your securities and digital assets would still be yours, held by someone else.' },
   { q: 'Can I run my own positions alongside a managed mandate?', a: 'Yes, and most clients do. The self-directed brokerage sits in the same account as the managed sleeves, so you see the committee’s positions and your own on one statement.' },
-  { q: 'How do I get money in and out?', a: 'By bank wire or ACH. Your dashboard shows the receiving details and a reference unique to you. Withdrawals go back to the bank account you save in Settings, which we verify once before the first payout.' },
+  { q: 'How do I get money in and out?', a: 'In crypto. Your dashboard shows the receiving address for each asset and network we support; you confirm the transfer with its transaction hash and the desk credits it once the chain confirms. Withdrawals go to the wallet you save in Settings, which we approve once before the first payout.' },
   { q: 'What does the advisory fee actually cost?', a: 'One all-in rate per managed mandate, shown in full on the product before you subscribe. There is no performance fee, no platform fee stacked on top, and no commission on US equity and ETF trades.' },
 ];
 

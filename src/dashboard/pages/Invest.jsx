@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import { Check, X, ArrowRight, AlertCircle, TrendingUp, Clock, Layers } from 'lucide-react';
+import { Check, X, ArrowRight, AlertCircle } from 'lucide-react';
 import PageHeader from './PageHeader.jsx';
 import { fmtUSD, RISK_COLOR, DashReveal } from '../data.jsx';
 import { useApi } from '../../lib/useApi.js';
@@ -12,7 +12,7 @@ import LoadingScreen from '../../components/ui/LoadingScreen.jsx';
    The shelf — six families, twenty-two products.
 
    Everything is funded from the cash account. Products whose kind is
-   'holding' are bought on the Holdings screen instead, so they link
+   'holding' are bought on the Account screen instead, so they link
    across rather than opening a subscription form.
    ============================================================ */
 
@@ -119,8 +119,6 @@ export default function Invest() {
   const accounts = accountData.accounts || [];
   const held = new Set(mine.filter((i) => i.status === 'active').map((i) => i.planId));
   const activeRows = mine.filter((i) => i.status === 'active');
-  const principal = activeRows.reduce((s, i) => s + i.principal, 0);
-  const accrued = activeRows.reduce((s, i) => s + (i.accrued || 0), 0);
 
   const shown = family === 'all' ? families : families.filter((f) => f.id === family);
 
@@ -147,22 +145,6 @@ export default function Invest() {
           <Check size={15} /> {flash}
         </div>
       )}
-
-      <DashReveal className="grid sm:grid-cols-3 gap-3">
-        {[
-          { label: 'Subscribed principal', value: fmtUSD(principal), icon: Layers },
-          { label: 'Accrued to date', value: fmtUSD(accrued), icon: TrendingUp, tone: 'var(--up)' },
-          { label: 'Active subscriptions', value: String(activeRows.length), icon: Clock },
-        ].map((s) => (
-          <div key={s.label} className="dash-figure">
-            <div className="flex items-center justify-between">
-              <p className="text-[10.5px] tracking-[0.14em] uppercase text-[color:var(--muted-2)]">{s.label}</p>
-              <s.icon size={14} className="text-[color:var(--accent)]" strokeWidth={1.7} />
-            </div>
-            <p className="num text-[22px] mt-2" style={{ color: s.tone || 'var(--ink)' }}>{s.value}</p>
-          </div>
-        ))}
-      </DashReveal>
 
       <DashReveal delay={60}>
         <div className="flex flex-wrap gap-2">
@@ -224,8 +206,8 @@ export default function Invest() {
                   </div>
 
                   {isHolding ? (
-                    <a href="/dashboard/holdings" className="dash-plan-btn" data-held="false">
-                      Trade on Holdings <ArrowRight size={14} />
+                    <a href="/dashboard/account" className="dash-plan-btn" data-held="false">
+                      Trade in Account <ArrowRight size={14} />
                     </a>
                   ) : (
                     <button onClick={() => setActive({ ...p, familyName: f.name })} className="dash-plan-btn" data-held={isHeld}>

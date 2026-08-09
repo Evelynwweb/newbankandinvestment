@@ -1,20 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Wallet, PiggyBank, CandlestickChart, Send, Download, Upload,
-  Landmark, Clock, Settings, Search, X, Users, ShieldCheck,
+  Wallet, PiggyBank, CandlestickChart, Download, Upload,
+  Clock, Settings, Search, X, Users, ShieldCheck,
 } from 'lucide-react';
 
 const SEARCHABLE = [
-  { label: 'Cash Management', icon: Wallet, to: '/dashboard/accounts' },
-  { label: 'Holdings', icon: CandlestickChart, to: '/dashboard/holdings' },
-  { label: 'Funding & wire details', icon: Download, to: '/dashboard/funding' },
-  { label: 'Send money', icon: Send, to: '/dashboard/transfers' },
-  { label: 'Invest in a plan', icon: PiggyBank, to: '/dashboard/invest' },
-  { label: 'Deposit', icon: Download, to: '/dashboard/deposit' },
+  { label: 'Cash Management', icon: Wallet, to: '/dashboard/account' },
+  { label: 'Positions & holdings', icon: CandlestickChart, to: '/dashboard/account' },
+  { label: 'Invest', icon: PiggyBank, to: '/dashboard/invest' },
+  { label: 'Fund with crypto', icon: Download, to: '/dashboard/funding' },
   { label: 'Withdraw', icon: Upload, to: '/dashboard/withdrawal' },
-  { label: 'Recent activity', icon: Clock, to: '/dashboard/transactions' },
-  { label: 'Referrals', icon: Users, to: '/dashboard/referrals' },
+  { label: 'Activity', icon: Clock, to: '/dashboard/activity' },
+  { label: 'Referral', icon: Users, to: '/dashboard/referral' },
+  { label: 'Payout wallet', icon: Wallet, to: '/dashboard/settings' },
   { label: 'Identity verification', icon: ShieldCheck, to: '/dashboard/kyc' },
   { label: 'Settings', icon: Settings, to: '/dashboard/settings' },
 ];

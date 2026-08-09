@@ -8,9 +8,9 @@ import { fmtDate, fmtSigned } from '../../lib/format.js';
 import LoadingScreen from '../../components/ui/LoadingScreen.jsx';
 
 const STEPS = [
-  { icon: Share2, title: 'Share your link', body: 'Send it to anyone who’d benefit from better banking.' },
+  { icon: Share2, title: 'Share your link', body: 'Send it to anyone who should be putting their money to work.' },
   { icon: Users, title: 'They open an account', body: 'Your code is applied automatically when they sign up.' },
-  { icon: Gift, title: 'You both get paid', body: 'Once their first deposit clears, the reward lands in checking.' },
+  { icon: Gift, title: 'You both get paid', body: 'Once their first deposit clears, the reward lands in your cash account.' },
 ];
 
 export default function Referrals() {
@@ -34,7 +34,7 @@ export default function Referrals() {
     <>
       <PageHeader
         eyebrow="Grow together"
-        title="Referrals"
+        title="Referral"
         subtitle={`Earn ${fmtUSD(data.rewardPerSignup, { maximumFractionDigits: 0 })} for every person who opens an account and funds it.`}
       />
 

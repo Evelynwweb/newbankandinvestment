@@ -82,17 +82,17 @@ export const INSTRUMENTS = [
   { symbol: 'ETH', name: 'Ethereum', kind: 'crypto', price: 3285.50 },
 ];
 
-const BANK_INSTRUCTIONS = [
-  { _id: 'wire-usd', label: 'USD domestic wire / ACH', accountName: 'Aurivest Securities LLC — Client Funds',
-    bankName: 'First Meridian Trust', accountNumber: '4402117836', routingNumber: '021000021',
-    swiftCode: 'FMTRUS33', bankAddress: '400 Lexington Avenue, New York, NY 10017, United States',
-    beneficiaryAddress: 'Aurivest Securities LLC, 1 Bay Plaza, Suite 900, New York, NY 10004',
-    currency: 'USD', notes: 'Include your reference in the wire memo so the credit can be matched.' },
-  { _id: 'wire-swift', label: 'International SWIFT', accountName: 'Aurivest Securities LLC — Client Funds',
-    bankName: 'First Meridian Trust', accountNumber: 'GB29FMTR60161331926819', routingNumber: '',
-    swiftCode: 'FMTRGB2L', bankAddress: '18 Threadneedle Street, London EC2R 8AR, United Kingdom',
-    beneficiaryAddress: 'Aurivest Securities LLC, 1 Bay Plaza, Suite 900, New York, NY 10004',
-    currency: 'USD', notes: 'Correspondent charges are shared (SHA). Allow two to four business days.' },
+const WALLETS = [
+  { _id: 'w-btc', asset: 'BTC', name: 'Bitcoin', network: 'Bitcoin', address: 'bc1qav7x2m0kz9wq4l3sdcpr8yhn6tgu5vfe20jxda',
+    memo: '', memoLabel: '', confirmations: '2 confirmations', minDeposit: 50, scope: 'both', isActive: true, sortOrder: 1 },
+  { _id: 'w-eth', asset: 'ETH', name: 'Ethereum', network: 'ERC-20', address: '0x7A3fD2c9E41b8065aC4Db19e5f0C7B2a63E914Dd',
+    memo: '', memoLabel: '', confirmations: '12 confirmations', minDeposit: 50, scope: 'both', isActive: true, sortOrder: 2 },
+  { _id: 'w-usdt-trc', asset: 'USDT', name: 'Tether USD', network: 'TRC-20', address: 'TQm5rV8xLc2FbNw9YePd3JhKzS6uA4gWnX',
+    memo: '', memoLabel: '', confirmations: '19 confirmations', minDeposit: 50, scope: 'both', isActive: true, sortOrder: 3 },
+  { _id: 'w-usdt-erc', asset: 'USDT', name: 'Tether USD', network: 'ERC-20', address: '0x1C8bE47aF03d95127eB6a4D80fC9375216AaE0b1',
+    memo: '', memoLabel: '', confirmations: '12 confirmations', minDeposit: 100, scope: 'both', isActive: true, sortOrder: 4 },
+  { _id: 'w-usdc', asset: 'USDC', name: 'USD Coin', network: 'ERC-20', address: '0x92Fd4a7bC016e5D83aB27409cF1e6B0d5847Ea23',
+    memo: '', memoLabel: '', confirmations: '12 confirmations', minDeposit: 100, scope: 'both', isActive: true, sortOrder: 5 },
 ];
 
 const SETTINGS = {
@@ -156,12 +156,9 @@ function seed() {
       { _id: 'h-aapl', userId, accountId: brokerageId, symbol: 'AAPL', name: 'Apple Inc.', kind: 'equity', units: 60, costBasis: 12400, price: 231.80 },
       { _id: 'h-btc', userId, accountId: brokerageId, symbol: 'BTC', name: 'Bitcoin', kind: 'crypto', units: 0.42, costBasis: 24100, price: 68420.00 },
     ],
-    bankAccount: {
-      accountName: 'Alexandra Reyes', bankName: 'Pacific Union Bank', accountNumber: '8820114937',
-      routingNumber: '121000358', swiftCode: 'PACUUS6S',
-      bankAddress: '55 Market Street, San Francisco, CA 94105, United States',
-      homeAddress: '1420 Sansome Street, Apt 6B, San Francisco, CA 94111',
-      currency: 'USD', verified: true, updatedAt: daysAgo(38),
+    payout: {
+      asset: 'USDT', network: 'TRC-20', address: 'TXk2pQ9vNc7HbRw4YsPd1JhLzM6uB3gWnE',
+      memo: '', label: 'Main payout wallet', verified: true, updatedAt: daysAgo(38),
     },
     beneficiaries: [
       { _id: uid(), userId, name: 'Daniel Okafor', bank: 'Chase Bank', number: '5540118293', nickname: 'Rent' },
@@ -257,12 +254,29 @@ function overviewFor(db, user) {
     { sym: 'Retirement', value: round2(retirement?.balance || 0), color: 'var(--gold-leaf)' },
   ].filter((h) => h.value > 0);
 
+  const completed = db.transactions.filter((t) => t.userId === user._id && t.status !== 'failed');
+  const totalDeposits = round2(
+    completed.filter((t) => t.type === 'deposit' && t.amount > 0).reduce((s, t) => s + t.amount, 0)
+  );
+  const holdingsValue = round2(
+    (db.holdings || []).filter((h) => h.userId === user._id).reduce((s, h) => s + h.units * h.price, 0)
+  );
+  const totalProfit = round2(
+    completed.filter((t) => ['interest', 'dividend'].includes(t.type) && t.amount > 0).reduce((s, t) => s + t.amount, 0)
+    + (db.profitBalance?.[user._id] || 0)
+    + investments.reduce((s, i) => s + accruedOn(i), 0)
+  );
+  const totalInvestment = round2(totalInvested + holdingsValue);
+
   return {
     accountValue,
+    totalDeposits,
+    totalProfit,
+    totalInvestment,
     balance: round2(cash?.balance || 0),
     brokerageBalance: round2(brokerage?.balance || 0),
     retirementBalance: round2(retirement?.balance || 0),
-    holdingsValue: round2((db.holdings || []).filter((h) => h.userId === user._id).reduce((s, h) => s + h.units * h.price, 0)),
+    holdingsValue,
     profitBalance: round2(db.profitBalance?.[user._id] || 0),
     totalInvested,
     activeInvestments: investments.length,
@@ -456,21 +470,32 @@ function route(db, path, method, body, token) {
     return { ok: true, proceeds, realised: round2(proceeds - basisOut) };
   }
 
-  if (url === '/api/bank/instructions' && method === 'GET') {
-    const user = requireUser(db, token);
-    return BANK_INSTRUCTIONS.map((b) => ({ ...b, reference: 'AV-' + (user.referralCode || 'DEMO') }));
-  }
-  if (url === '/api/bank/account' && method === 'GET') {
+  if (url.startsWith('/api/wallets') && method === 'GET') {
     requireUser(db, token);
-    const b = db.bankAccount;
-    return b ? { ...b, accountNumberLast4: String(b.accountNumber).slice(-4), accountNumber: undefined } : null;
+    const scope = new URLSearchParams(url.split('?')[1] || '').get('scope');
+    return WALLETS
+      .filter((w) => w.isActive && (!scope || w.scope === 'both' || w.scope === scope))
+      .sort((a, b) => a.sortOrder - b.sortOrder);
   }
-  if (url === '/api/bank/account' && method === 'PUT') {
+  if (url === '/api/payout' && method === 'GET') {
+    requireUser(db, token);
+    const p = db.payout;
+    if (!p?.address) return null;
+    return {
+      asset: p.asset, network: p.network, label: p.label, memo: p.memo,
+      verified: p.verified, updatedAt: p.updatedAt,
+      addressMasked: p.address.slice(0, 6) + '…' + p.address.slice(-6),
+    };
+  }
+  if (url === '/api/payout' && method === 'PUT') {
     const user = requireUser(db, token);
-    if (!body.accountName || !body.bankName || !body.accountNumber) throw new MockError('Account name, bank name and account number are required.', 400);
-    if (!body.routingNumber && !body.swiftCode) throw new MockError('Provide a routing number or a SWIFT code.', 400);
-    if (!body.homeAddress) throw new MockError('Your home address is required for the wire.', 400);
-    db.bankAccount = { ...body, verified: false, updatedAt: now() };
+    if (!body.asset || !body.network) throw new MockError('Choose an asset and a network.', 400);
+    if (!body.address || String(body.address).trim().length < 20) throw new MockError('That does not look like a valid wallet address.', 400);
+    /* A new address always re-enters review — that is the whole point of the gate. */
+    db.payout = {
+      asset: body.asset, network: body.network, address: String(body.address).trim(),
+      memo: body.memo || '', label: body.label || '', verified: false, updatedAt: now(),
+    };
     return publicUser(user);
   }
 
@@ -533,11 +558,17 @@ function route(db, path, method, body, token) {
   if (url === '/api/deposits' && method === 'POST') {
     const user = requireUser(db, token);
     const amount = Number(body.amount);
-    if (!(amount >= SETTINGS.minDeposit)) throw new MockError(`The minimum deposit is $${SETTINGS.minDeposit}.`, 400);
+    if (!(amount >= SETTINGS.minDeposit)) throw new MockError(`The minimum deposit is ${SETTINGS.minDeposit}.`, 400);
+    if (!body.txHash || String(body.txHash).trim().length < 10) throw new MockError('Paste the transaction hash from your wallet.', 400);
+    const wallet = WALLETS.find((w) => w._id === body.walletId) || WALLETS[0];
     const acct = db.accounts.find((a) => a._id === body.accountId && a.userId === user._id) || primaryAccount(db, user._id);
-    acct.balance = round2(acct.balance + amount);
-    addTx(db, user._id, { type: 'deposit', label: 'Deposit received', detail: `${body.method || 'Bank transfer'} → ${acct.name}`, amount, accountId: acct._id });
-    return { ok: true, account: acct };
+    /* On-chain credits are confirmed by the desk, never automatically. */
+    addTx(db, user._id, {
+      type: 'deposit', label: 'Deposit awaiting confirmation',
+      detail: `${wallet.asset} on ${wallet.network} · ${String(body.txHash).slice(0, 10)}…`,
+      amount, status: 'pending', accountId: acct._id,
+    });
+    return { ok: true, status: 'pending', account: acct };
   }
 
   if (url === '/api/withdrawals' && method === 'POST') {
@@ -545,14 +576,17 @@ function route(db, path, method, body, token) {
     if ((user.kyc?.status || 'unverified') !== 'verified') {
       throw new MockError('Identity verification must be approved before withdrawing.', 403);
     }
+    const payout = db.payout;
+    if (!payout?.address) throw new MockError('Add a payout wallet in Settings before withdrawing.', 400);
+    if (!payout.verified) throw new MockError('Your payout wallet is awaiting approval.', 403);
     const amount = Number(body.amount);
-    if (!(amount >= SETTINGS.minWithdrawal)) throw new MockError(`The minimum withdrawal is $${SETTINGS.minWithdrawal}.`, 400);
+    if (!(amount >= SETTINGS.minWithdrawal)) throw new MockError(`The minimum withdrawal is ${SETTINGS.minWithdrawal}.`, 400);
     const acct = db.accounts.find((a) => a._id === body.accountId && a.userId === user._id) || primaryAccount(db, user._id);
     if (acct.balance < amount) throw new MockError('That’s more than the available balance.', 400);
     acct.balance = round2(acct.balance - amount);
     addTx(db, user._id, {
       type: 'withdraw', label: 'Withdrawal requested',
-      detail: `${body.method || 'Bank transfer'} · ····${String(body.destination || '').slice(-4)}`,
+      detail: `${payout.asset} on ${payout.network} · ${payout.address.slice(0, 6)}…${payout.address.slice(-6)}`,
       amount: -amount, status: 'pending', accountId: acct._id,
     });
     return { ok: true, account: acct };

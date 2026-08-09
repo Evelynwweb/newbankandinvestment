@@ -16,12 +16,8 @@ const TopicPage = lazy(() => import('./pages/TopicPage.jsx'));
 const ResourcesPage = lazy(() => import('./pages/ResourcesPage.jsx'));
 const DashboardLayout = lazy(() => import('./dashboard/components/DashboardLayout.jsx'));
 const Dashboard = lazy(() => import('./dashboard/Dashboard.jsx'));
-const Accounts = lazy(() => import('./dashboard/pages/Accounts.jsx'));
-const Transfers = lazy(() => import('./dashboard/pages/Transfers.jsx'));
-const Holdings = lazy(() => import('./dashboard/pages/Holdings.jsx'));
+const Account = lazy(() => import('./dashboard/pages/Account.jsx'));
 const Invest = lazy(() => import('./dashboard/pages/Invest.jsx'));
-const Portfolio = lazy(() => import('./dashboard/pages/Portfolio.jsx'));
-const Deposit = lazy(() => import('./dashboard/pages/Deposit.jsx'));
 const Withdrawal = lazy(() => import('./dashboard/pages/Withdrawal.jsx'));
 const Funding = lazy(() => import('./dashboard/pages/Funding.jsx'));
 const TransactionHistory = lazy(() => import('./dashboard/pages/TransactionHistory.jsx'));
@@ -42,9 +38,9 @@ function RequireAuth({ children }) {
    Application routes.
    - Public:  Homepage, Login, Register, marketing/info pages
    - Dashboard shell (persistent nav, auth-gated) with nested pages:
-     Overview, Accounts, Transfers, Cards, Invest, Portfolio,
-     Deposit, Withdrawal, Loans, Transactions, Referrals,
-     Account Settings, KYC.
+     Overview, Account, Invest, Funding, Withdrawal, Activity,
+     Referral, Settings — plus KYC, and redirects for the paths
+     these screens replaced.
    ============================================================ */
 export default function App() {
   return (
@@ -65,18 +61,22 @@ export default function App() {
 
         <Route path="/dashboard" element={<RequireAuth><DashboardLayout /></RequireAuth>}>
           <Route index element={<Dashboard />} />
-          <Route path="accounts" element={<Accounts />} />
-          <Route path="transfers" element={<Transfers />} />
-          <Route path="holdings" element={<Holdings />} />
+          <Route path="account" element={<Account />} />
           <Route path="invest" element={<Invest />} />
-          <Route path="portfolio" element={<Portfolio />} />
-          <Route path="deposit" element={<Funding />} />
           <Route path="withdrawal" element={<Withdrawal />} />
           <Route path="funding" element={<Funding />} />
-          <Route path="transactions" element={<TransactionHistory />} />
-          <Route path="referrals" element={<Referrals />} />
+          <Route path="activity" element={<TransactionHistory />} />
+          <Route path="referral" element={<Referrals />} />
           <Route path="settings" element={<AccountSettings />} />
           <Route path="kyc" element={<Kyc />} />
+          {/* retired paths — keep old links and bookmarks alive */}
+          <Route path="accounts" element={<Navigate to="/dashboard/account" replace />} />
+          <Route path="holdings" element={<Navigate to="/dashboard/account" replace />} />
+          <Route path="portfolio" element={<Navigate to="/dashboard/account" replace />} />
+          <Route path="transfers" element={<Navigate to="/dashboard/account" replace />} />
+          <Route path="deposit" element={<Navigate to="/dashboard/funding" replace />} />
+          <Route path="transactions" element={<Navigate to="/dashboard/activity" replace />} />
+          <Route path="referrals" element={<Navigate to="/dashboard/referral" replace />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />
