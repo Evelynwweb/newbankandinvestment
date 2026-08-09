@@ -179,7 +179,7 @@ export default function Account() {
       </DashReveal>
 
       {/* the three accounts */}
-      <DashReveal delay={60} className="grid md:grid-cols-3 gap-4">
+      {/* <DashReveal delay={60} className="grid md:grid-cols-3 gap-4">
         {accounts.map((a) => {
           const Icon = KIND_ICON[a.kind] || Wallet;
           const meta = ACCOUNT_META[a.kind] || {};
@@ -204,7 +204,7 @@ export default function Account() {
             </div>
           );
         })}
-      </DashReveal>
+      </DashReveal> */}
 
       {/* self-directed positions */}
       <DashReveal delay={100}>
