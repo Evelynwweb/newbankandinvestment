@@ -119,17 +119,25 @@ export default function Account() {
   const { data: holdingData, reload: reloadHoldings } = useApi('/api/holdings', [walletVersion]);
   const { data: investments } = useApi('/api/investments', [walletVersion]);
   const { data: instruments } = useApi('/api/holdings/instruments');
+  const { data: overview } = useApi('/api/dashboard/overview', [walletVersion]);
   const [hidden, setHidden] = useState(false);
   const [copied, setCopied] = useState(null);
   const [mode, setMode] = useState(null);
 
-  if (!accountData || !holdingData || !investments || !instruments) return <LoadingScreen inline />;
+  if (!accountData || !holdingData || !investments || !instruments || !overview) return <LoadingScreen inline />;
 
   const accounts = accountData.accounts || [];
   const { holdings = [], marketValue = 0, costBasis = 0 } = holdingData;
   const activeSubs = investments.filter((i) => i.status === 'active');
   const gain = marketValue - costBasis;
-  const total = accounts.reduce((s, a) => s + a.balance, 0) + marketValue;
+
+  /* Same three figures as the overview, read from the same endpoint so the
+     two screens can never disagree. */
+  const FIGURES = [
+    { label: 'Total deposits', value: overview.totalDeposits, note: 'Receipts approved and credited' },
+    { label: 'Total profit', value: overview.totalProfit, note: 'Interest, dividends and accrued returns', tone: 'var(--up)' },
+    { label: 'Total investments', value: overview.totalInvestment, note: 'Subscribed products and positions' },
+  ];
 
   const copyNumber = async (acct) => {
     try {
@@ -158,14 +166,16 @@ export default function Account() {
         </button>
       </PageHeader>
 
-      <DashReveal>
-        <div className="card p-6 md:p-7">
-          <p className="text-[10.5px] tracking-[0.14em] uppercase text-[color:var(--muted-2)]">Total portfolio value</p>
-          <p className="display-md mt-2">{hidden ? '••••••••' : fmtUSD(total)}</p>
-          <p className="text-[12.5px] mt-2 text-[color:var(--muted-2)]">
-            Cash, subscribed products and self-directed positions combined.
-          </p>
-        </div>
+      <DashReveal className="grid sm:grid-cols-3 gap-3">
+        {FIGURES.map((f) => (
+          <div key={f.label} className="card p-6">
+            <p className="text-[10.5px] tracking-[0.14em] uppercase text-[color:var(--muted-2)]">{f.label}</p>
+            <p className="num text-[24px] mt-2.5" style={{ color: f.tone || 'var(--ink)' }}>
+              {hidden ? '••••••' : fmtUSD(f.value || 0)}
+            </p>
+            <p className="text-[11.5px] mt-1.5 text-[color:var(--muted-2)]">{f.note}</p>
+          </div>
+        ))}
       </DashReveal>
 
       {/* the three accounts */}

@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import { Copy, Check, Wallet, AlertTriangle, AlertCircle, ArrowRight } from 'lucide-react';
+import { Copy, Check, Wallet, AlertTriangle, AlertCircle, ArrowRight, Upload, X } from 'lucide-react';
 import PageHeader from './PageHeader.jsx';
 import { fmtUSD, DashReveal } from '../data.jsx';
 import { useApi } from '../../lib/useApi.js';
@@ -10,15 +10,16 @@ import LoadingScreen from '../../components/ui/LoadingScreen.jsx';
 /* ============================================================
    Funding — crypto only.
 
-   Pick an asset and network, send to the address, then paste the
-   transaction hash so the desk can verify it on-chain. Nothing is
-   credited until that check passes; there is no auto-approval on a
-   deposit the platform cannot yet see.
+   Pick an asset and network, send to the address, then upload the
+   receipt. A reviewer opens the proof in the admin panel and their
+   approval is what credits the account — nothing here clears itself.
    ============================================================ */
 
 const ASSET_TINT = {
   BTC: '#F7931A', ETH: '#8A92B2', USDT: '#26A17B', USDC: '#2775CA',
 };
+
+const MAX_PROOF_BYTES = 4 * 1024 * 1024;
 
 export default function Funding() {
   const { walletVersion, bumpWallet } = useOutletContext();
@@ -26,10 +27,12 @@ export default function Funding() {
   const [active, setActive] = useState(0);
   const [copied, setCopied] = useState('');
   const [amount, setAmount] = useState('');
-  const [txHash, setTxHash] = useState('');
+  const [reference, setReference] = useState('');
+  const [proof, setProof] = useState(null);      // { name, dataUrl }
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [sent, setSent] = useState(false);
+  const fileRef = useRef(null);
 
   if (!wallets) return <LoadingScreen inline />;
 
@@ -43,6 +46,29 @@ export default function Funding() {
     } catch { /* clipboard blocked — the value is on screen */ }
   };
 
+  const pickFile = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setError('');
+    if (!file.type.startsWith('image/')) {
+      setError('Upload a screenshot or photo — PNG, JPG or WebP.');
+      return;
+    }
+    if (file.size > MAX_PROOF_BYTES) {
+      setError('That image is over 4MB. Please upload a smaller one.');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => setProof({ name: file.name, dataUrl: String(reader.result) });
+    reader.onerror = () => setError('That file could not be read. Try another.');
+    reader.readAsDataURL(file);
+  };
+
+  const clearProof = () => {
+    setProof(null);
+    if (fileRef.current) fileRef.current.value = '';
+  };
+
   const submit = async (e) => {
     e.preventDefault();
     setBusy(true);
@@ -51,11 +77,13 @@ export default function Funding() {
       await api.post('/api/deposits', {
         amount: Number(amount),
         walletId: wallet._id,
-        txHash: txHash.trim(),
+        reference: reference.trim(),
+        proof: proof.dataUrl,
       });
       setSent(true);
       setAmount('');
-      setTxHash('');
+      setReference('');
+      clearProof();
       bumpWallet();
     } catch (err) {
       setError(err.message);
@@ -83,7 +111,7 @@ export default function Funding() {
       <PageHeader
         eyebrow="Add funds"
         title="Funding"
-        subtitle="Send crypto to the address below, then paste the transaction hash so we can confirm it on-chain."
+        subtitle="Send crypto to the address below, then upload your payment receipt. The desk reviews it and credits your account."
       />
 
       {/* asset picker */}
@@ -158,16 +186,17 @@ export default function Funding() {
           )}
 
           <div className="flex items-center justify-between mt-5 pt-4 border-t border-[color:var(--rule-soft)] text-[12.5px]">
-            <span className="text-[color:var(--muted-2)]">Credited after</span>
+            <span className="text-[color:var(--muted-2)]">Network confirmation</span>
             <span>{wallet.confirmations}</span>
           </div>
         </div>
 
         {/* confirm the transfer */}
         <div className="card p-6 flex flex-col">
-          <p className="display-sm">Confirm your transfer</p>
+          <p className="display-sm">Upload your receipt</p>
           <p className="text-[13px] mt-2 text-[color:var(--muted)]">
-            Once sent, paste the transaction hash. We verify it on-chain before crediting.
+            Once you have sent the transfer, attach a screenshot of it. The desk reviews every
+            receipt by hand before crediting.
           </p>
 
           {sent ? (
@@ -176,9 +205,10 @@ export default function Funding() {
                 style={{ background: 'color-mix(in srgb, var(--up) 12%, transparent)' }}>
                 <Check size={22} style={{ color: 'var(--up)' }} />
               </span>
-              <p className="text-[14px] font-semibold">Submitted for verification</p>
+              <p className="text-[14px] font-semibold">Receipt submitted</p>
               <p className="text-[12.5px] text-[color:var(--muted)] max-w-[240px]">
-                Your cash account is credited as soon as the transaction confirms on-chain.
+                It is now with the desk for review. Your cash account is credited as soon as it is
+                approved, and you will see it in Activity.
               </p>
               <button onClick={() => setSent(false)} className="btn-outline text-[13px] px-5 py-2.5 mt-2">
                 Log another
@@ -199,12 +229,43 @@ export default function Funding() {
                 />
               </div>
 
-              <label className="auth-label mt-5">Transaction hash</label>
+              <label className="auth-label mt-5">Proof of payment</label>
               <input
-                value={txHash}
-                onChange={(e) => { setError(''); setTxHash(e.target.value.trim()); }}
-                placeholder="0x… or the chain's tx id"
-                className="auth-field num text-[12.5px]"
+                ref={fileRef}
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+                onChange={pickFile}
+                className="sr-only"
+                id="proof-upload"
+              />
+              {proof ? (
+                <div className="card-inset p-3 flex items-center gap-3">
+                  <img src={proof.dataUrl} alt="" className="w-12 h-12 rounded-lg object-cover shrink-0"
+                    style={{ border: '1px solid var(--rule)' }} />
+                  <span className="text-[12.5px] truncate flex-1">{proof.name}</span>
+                  <button type="button" onClick={clearProof} aria-label="Remove receipt"
+                    className="shrink-0 text-[color:var(--muted-2)] hover:text-[color:var(--ink)]">
+                    <X size={15} />
+                  </button>
+                </div>
+              ) : (
+                <label
+                  htmlFor="proof-upload"
+                  className="flex flex-col items-center justify-center gap-1.5 px-6 py-8 rounded-2xl cursor-pointer text-center"
+                  style={{ border: '1.5px dashed var(--rule)', background: 'var(--surface-2)' }}
+                >
+                  <Upload size={20} className="text-[color:var(--muted-2)]" />
+                  <span className="text-[13px] text-[color:var(--ink)]">Tap to attach your receipt</span>
+                  <span className="text-[11.5px] text-[color:var(--muted-2)]">PNG, JPG or WebP · up to 4MB</span>
+                </label>
+              )}
+
+              <label className="auth-label mt-5">Reference or note <span className="opacity-60">(optional)</span></label>
+              <input
+                value={reference}
+                onChange={(e) => { setError(''); setReference(e.target.value); }}
+                placeholder="Transaction id, or anything the desk should know"
+                className="auth-field text-[12.5px]"
               />
 
               {error && (
@@ -215,10 +276,10 @@ export default function Funding() {
 
               <button
                 type="submit"
-                disabled={busy || !(Number(amount) > 0) || txHash.length < 10}
+                disabled={busy || !(Number(amount) > 0) || !proof}
                 className="btn-solid w-full py-3.5 mt-auto disabled:opacity-50"
               >
-                {busy ? 'Submitting…' : 'Submit for verification'} <ArrowRight size={15} />
+                {busy ? 'Submitting…' : 'Submit for review'} <ArrowRight size={15} />
               </button>
             </form>
           )}
@@ -226,8 +287,9 @@ export default function Funding() {
       </DashReveal>
 
       <p className="text-[11.5px] leading-relaxed text-[color:var(--muted-2)]">
-        Deposits are credited at the USD value confirmed by the desk at the time the transaction
-        settles, which may differ from the value when you sent it. Send only from a wallet you control.
+        Deposits are credited at the USD value the desk confirms on review, which may differ from the
+        value when you sent it. Make sure the receipt clearly shows the amount, the destination address
+        and the date. Send only from a wallet you control.
       </p>
     </>
   );

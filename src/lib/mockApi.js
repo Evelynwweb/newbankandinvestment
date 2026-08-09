@@ -558,14 +558,14 @@ function route(db, path, method, body, token) {
   if (url === '/api/deposits' && method === 'POST') {
     const user = requireUser(db, token);
     const amount = Number(body.amount);
-    if (!(amount >= SETTINGS.minDeposit)) throw new MockError(`The minimum deposit is ${SETTINGS.minDeposit}.`, 400);
-    if (!body.txHash || String(body.txHash).trim().length < 10) throw new MockError('Paste the transaction hash from your wallet.', 400);
+    if (!(amount >= SETTINGS.minDeposit)) throw new MockError(`The minimum deposit is $${SETTINGS.minDeposit}.`, 400);
+    if (!body.proof || !/^data:image\//.test(body.proof)) throw new MockError('Attach a screenshot or photo of your payment receipt.', 400);
     const wallet = WALLETS.find((w) => w._id === body.walletId) || WALLETS[0];
     const acct = db.accounts.find((a) => a._id === body.accountId && a.userId === user._id) || primaryAccount(db, user._id);
-    /* On-chain credits are confirmed by the desk, never automatically. */
+    /* Deposits are credited by a reviewer approving the receipt, never automatically. */
     addTx(db, user._id, {
-      type: 'deposit', label: 'Deposit awaiting confirmation',
-      detail: `${wallet.asset} on ${wallet.network} · ${String(body.txHash).slice(0, 10)}…`,
+      type: 'deposit', label: 'Deposit pending review',
+      detail: `${wallet.asset} on ${wallet.network} · receipt uploaded`,
       amount, status: 'pending', accountId: acct._id,
     });
     return { ok: true, status: 'pending', account: acct };
@@ -580,7 +580,7 @@ function route(db, path, method, body, token) {
     if (!payout?.address) throw new MockError('Add a payout wallet in Settings before withdrawing.', 400);
     if (!payout.verified) throw new MockError('Your payout wallet is awaiting approval.', 403);
     const amount = Number(body.amount);
-    if (!(amount >= SETTINGS.minWithdrawal)) throw new MockError(`The minimum withdrawal is ${SETTINGS.minWithdrawal}.`, 400);
+    if (!(amount >= SETTINGS.minWithdrawal)) throw new MockError(`The minimum withdrawal is $${SETTINGS.minWithdrawal}.`, 400);
     const acct = db.accounts.find((a) => a._id === body.accountId && a.userId === user._id) || primaryAccount(db, user._id);
     if (acct.balance < amount) throw new MockError('That’s more than the available balance.', 400);
     acct.balance = round2(acct.balance - amount);

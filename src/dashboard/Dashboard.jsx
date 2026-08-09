@@ -88,7 +88,7 @@ function BalanceCard({ overview, name, hidden, onToggle }) {
 function Figures({ overview, hidden }) {
   const rows = [
     { label: 'Total profit', value: overview.totalProfit, note: 'Interest, dividends and accrued returns', to: '/dashboard/activity', tone: 'var(--up)' },
-    { label: 'Total deposits', value: overview.totalDeposits, note: 'Confirmed on-chain and credited', to: '/dashboard/funding' },
+    { label: 'Total deposits', value: overview.totalDeposits, note: 'Receipts approved and credited', to: '/dashboard/funding' },
     { label: 'Total investment', value: overview.totalInvestment, note: 'Subscribed products and positions', to: '/dashboard/invest' },
   ];
   return (
