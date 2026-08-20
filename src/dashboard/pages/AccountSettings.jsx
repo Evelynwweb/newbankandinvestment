@@ -56,8 +56,10 @@ const NETWORKS = {
   USDC: ['ERC-20'],
 };
 
-/* Where withdrawals are sent. Saving a new address clears its verified
-   flag, so the desk re-approves before the next payout leaves. */
+/* A crypto address kept on file so it does not have to be found again.
+   The Withdrawal screen asks for the destination on the request itself —
+   this one is a saved reference the desk verifies ahead of time. Saving a
+   new address clears its verified flag and sends it back for review. */
 function PayoutWallet() {
   const { data: payout, reload } = useApi('/api/payout');
   const [form, setForm] = useState({ asset: 'USDT', network: 'TRC-20', address: '', memo: '', label: '' });
@@ -76,7 +78,7 @@ function PayoutWallet() {
     setBusy(true); setErr('');
     try {
       await api.put('/api/payout', form);
-      setMsg('Saved — awaiting approval before the next payout.');
+      setMsg('Saved — the desk will verify it.');
       setForm((f) => ({ ...f, address: '', memo: '' }));
       reload();
       setTimeout(() => setMsg(''), 5000);
@@ -88,7 +90,7 @@ function PayoutWallet() {
   };
 
   return (
-    <Section icon={Wallet} title="Payout wallet" subtitle="Crypto only. Withdrawals go here and nowhere else.">
+    <Section icon={Wallet} title="Payout wallet" subtitle="A crypto address kept on file and verified ahead of time, so payouts to it clear faster.">
       {payout?.addressMasked && (
         <div className="card-inset p-4 mb-5">
           <div className="flex items-center justify-between gap-3">

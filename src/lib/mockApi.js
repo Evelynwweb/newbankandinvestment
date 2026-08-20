@@ -576,9 +576,35 @@ function route(db, path, method, body, token) {
     if ((user.kyc?.status || 'unverified') !== 'verified') {
       throw new MockError('Identity verification must be approved before withdrawing.', 403);
     }
-    const payout = db.payout;
-    if (!payout?.address) throw new MockError('Add a payout wallet in Settings before withdrawing.', 400);
-    if (!payout.verified) throw new MockError('Your payout wallet is awaiting approval.', 403);
+    /* Mirrors routes/money.js: the destination is whatever the client filled
+       in on the request — a crypto wallet, or the seven-field wire block. */
+    const trim = (v) => String(v ?? '').trim();
+    let detail;
+    let payoutDetails;
+    if (body.method === 'crypto') {
+      const walletType = trim(body.walletType);
+      const address = trim(body.walletAddress);
+      if (!walletType) throw new MockError('Choose the crypto wallet type to be paid in.', 400);
+      if (address.length < 20) throw new MockError('That does not look like a valid wallet address.', 400);
+      payoutDetails = { walletType, address };
+      detail = `${walletType} · ${address.slice(0, 6)}…${address.slice(-6)}`;
+    } else if (body.method === 'wire') {
+      const WIRE = [
+        ['accountName', 'Account name'], ['bankName', 'Bank name'],
+        ['accountNumber', 'Account number'], ['swiftCode', 'Swift code'],
+        ['homeAddress', 'Home address'], ['routingNumber', 'Routing number'],
+        ['bankAddress', 'Bank address'],
+      ];
+      payoutDetails = {};
+      for (const [key, label] of WIRE) {
+        const value = trim(body[key]);
+        if (!value) throw new MockError(`${label} is required for a wire withdrawal.`, 400);
+        payoutDetails[key] = value;
+      }
+      detail = `${payoutDetails.bankName} · ····${payoutDetails.accountNumber.slice(-4)}`;
+    } else {
+      throw new MockError('Choose whether to withdraw by crypto or by wire.', 400);
+    }
     const amount = Number(body.amount);
     if (!(amount >= SETTINGS.minWithdrawal)) throw new MockError(`The minimum withdrawal is $${SETTINGS.minWithdrawal}.`, 400);
     const acct = db.accounts.find((a) => a._id === body.accountId && a.userId === user._id) || primaryAccount(db, user._id);
@@ -586,8 +612,9 @@ function route(db, path, method, body, token) {
     acct.balance = round2(acct.balance - amount);
     addTx(db, user._id, {
       type: 'withdraw', label: 'Withdrawal requested',
-      detail: `${payout.asset} on ${payout.network} · ${payout.address.slice(0, 6)}…${payout.address.slice(-6)}`,
+      detail,
       amount: -amount, status: 'pending', accountId: acct._id,
+      payoutMethod: body.method, payoutDetails,
     });
     return { ok: true, account: acct };
   }
