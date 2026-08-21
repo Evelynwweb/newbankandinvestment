@@ -58,7 +58,7 @@ export default function Footer() {
       <div className="border-t border-[color:var(--rule)]">
         <div className="max-w-[1180px] mx-auto px-5 sm:px-6 py-7 text-[11.5px] leading-relaxed text-[color:var(--muted-2)]">
           <div className="flex flex-col sm:flex-row justify-between gap-2 mb-3">
-            <span>&copy; 2026 Betamint Assets Management. All rights reserved.</span>
+            <span>&copy; 2026 Betament Assets Management. All rights reserved.</span>
             <span>Deposits insured to the applicable statutory limit &middot; Equal Housing Lender</span>
           </div>
           <p className="max-w-3xl">

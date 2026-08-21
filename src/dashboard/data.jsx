@@ -9,8 +9,8 @@ import {
    Account data (balances, positions, subscriptions, activity…)
    comes from the API — see src/lib/api.js and useApi.js.
    ============================================================ */
-export const BRAND = 'Betamint';
-export const BRAND_FULL = 'Betamint Assets Management';
+export const BRAND = 'Betament';
+export const BRAND_FULL = 'Betament Assets Management';
 
 /* Sidebar / drawer navigation — maps 1:1 to the dashboard routes in App.jsx */
 export const NAV_ITEMS = [

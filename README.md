@@ -1,4 +1,4 @@
-# Betamint Assets Management — Investment & Banking Frontend
+# Betament Assets Management — Investment & Banking Frontend
 
 A React + Vite frontend for a combined **banking and investment** platform: insured deposit
 accounts, cards, transfers, managed investment mandates, loans and financial planning.

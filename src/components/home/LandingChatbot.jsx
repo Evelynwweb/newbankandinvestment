@@ -9,7 +9,7 @@ import { getReply, SUGGESTIONS, BOT_NAME } from './chatbotBrain.js';
    so replies feel considered, and quick-question chips.
    ============================================================ */
 
-const WELCOME = `Hi there! 👋 I'm ${BOT_NAME}, Betamint's assistant. Ask me anything — opening an account, savings rates, transfers, portfolios, loans… I'm here 24/7.`;
+const WELCOME = `Hi there! 👋 I'm ${BOT_NAME}, Betament's assistant. Ask me anything — opening an account, savings rates, transfers, portfolios, loans… I'm here 24/7.`;
 
 export default function LandingChatbot() {
   const navigate = useNavigate();
@@ -60,7 +60,7 @@ export default function LandingChatbot() {
                 <Sparkles size={16} className="text-[color:var(--on-accent)]" />
               </div>
               <div>
-                <p className="text-[14px] font-semibold text-[color:var(--ink)]">{BOT_NAME} · Betamint</p>
+                <p className="text-[14px] font-semibold text-[color:var(--ink)]">{BOT_NAME} · Betament</p>
                 <p className="flex items-center gap-1.5 text-[10.5px] text-[color:var(--up)]">
                   <span className="w-1.5 h-1.5 rounded-full bg-[color:var(--up)]" /> Online — instant answers
                 </p>

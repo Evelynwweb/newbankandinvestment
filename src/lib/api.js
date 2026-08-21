@@ -1,5 +1,5 @@
 /* ============================================================
-   Thin fetch wrapper for the Betamint API.
+   Thin fetch wrapper for the Betament API.
 
    Base URL comes from VITE_API_URL. When that variable is absent the
    app falls back to the in-browser demo backend (lib/mockApi.js) so the
@@ -12,7 +12,7 @@ const RAW_URL = import.meta.env.VITE_API_URL || '';
 const API_URL = RAW_URL.replace(/\/$/, '');
 export const USING_MOCK = !API_URL;
 
-const TOKEN_KEY = 'betamint-token';
+const TOKEN_KEY = 'betament-token';
 
 export const getToken = () => localStorage.getItem(TOKEN_KEY);
 export const setToken = (token) =>

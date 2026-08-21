@@ -2,13 +2,13 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "betamint-dev",
+      "name": "betament-dev",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "port": 5173
     },
     {
-      "name": "betamint-admin",
+      "name": "betament-admin",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["--prefix", "../invandbankadmin", "run", "dev"],
       "port": 5174

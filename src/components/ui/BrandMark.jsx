@@ -1,5 +1,5 @@
 /* ============================================================
-   Brand logo mark — the Betamint crest from public/blogo.svg.
+   Brand logo mark — the Betament crest from public/blogo.svg.
    Single source of truth so every surface uses the same logo.
    ============================================================ */
 export default function BrandMark({ size = 28, className = '' }) {
@@ -8,7 +8,7 @@ export default function BrandMark({ size = 28, className = '' }) {
       src="/blogo.svg"
       width={size}
       height={size}
-      alt="Betamint Assets Management"
+      alt="Betament Assets Management"
       className={className}
       style={{ display: 'block', objectFit: 'contain' }}
       draggable={false}
@@ -22,7 +22,7 @@ export function Wordmark({ size = 22, className = '' }) {
   return (
     <span className={`flex flex-col leading-none ${className}`}>
       <span className="font-display font-semibold tracking-tight" style={{ fontSize: size }}>
-        Betamint
+        Betament
       </span>
       <span
         className="font-semibold uppercase text-[color:var(--muted-2)]"

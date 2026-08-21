@@ -24,7 +24,7 @@ export default function Partners() {
     <PageShell
       eyebrow="Our Partners"
       title="The institutions behind the platform"
-      lede="Betamint is built on partnerships with specialists in custody, settlement, risk and law — so no single point of failure sits inside one company."
+      lede="Betament is built on partnerships with specialists in custody, settlement, risk and law — so no single point of failure sits inside one company."
       icon={Handshake}
     >
       <section className="max-w-7xl mx-auto px-5 sm:px-6 md:px-10 py-8 md:py-12">

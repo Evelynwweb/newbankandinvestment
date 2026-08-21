@@ -2,14 +2,14 @@
    In-browser demo backend.
 
    Active only while VITE_API_URL is unset (see lib/api.js). It answers the
-   exact routes the real Betamint API is expected to expose and persists to
+   exact routes the real Betament API is expected to expose and persists to
    localStorage, so every screen — accounts, products, holdings, funding,
    KYC — is fully explorable without a server running.
 
    Swap in the real backend by setting VITE_API_URL; nothing else changes.
    ============================================================ */
 
-const DB_KEY = 'betamint-demo-db';
+const DB_KEY = 'betament-demo-db';
 const LATENCY = 260; // ms — enough for loading states to be visible/real
 
 const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
@@ -162,7 +162,7 @@ function seed() {
     },
     beneficiaries: [
       { _id: uid(), userId, name: 'Daniel Okafor', bank: 'Chase Bank', number: '5540118293', nickname: 'Rent' },
-      { _id: uid(), userId, name: 'Mira Solberg', bank: 'Betamint', number: '7719038452', nickname: 'Sister' },
+      { _id: uid(), userId, name: 'Mira Solberg', bank: 'Betament', number: '7719038452', nickname: 'Sister' },
     ],
     transactions: [],
     profitBalance: { [userId]: 1284.62 },
@@ -178,7 +178,7 @@ function seed() {
     { type: 'investment', label: 'Private Credit', detail: 'Subscribed from Cash Management', amount: -25000, status: 'completed', accountId: cashId, at: 120 },
     { type: 'withdraw', label: 'ATM withdrawal', detail: 'Market St · San Francisco', amount: -300, status: 'completed', accountId: cashId, at: 18 },
     { type: 'investment', label: 'Balanced Portfolio', detail: 'Top-up subscription', amount: -5000, status: 'completed', accountId: retirementId, at: 24 },
-    { type: 'referral', label: 'Referral reward', detail: 'Mira Solberg joined Betamint', amount: 75, status: 'completed', accountId: cashId, at: 30 },
+    { type: 'referral', label: 'Referral reward', detail: 'Mira Solberg joined Betament', amount: 75, status: 'completed', accountId: cashId, at: 30 },
   ];
   db.transactions = tx.map((t) => ({
     _id: uid(), userId, type: t.type, label: t.label, detail: t.detail,

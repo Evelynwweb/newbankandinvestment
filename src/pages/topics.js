@@ -118,7 +118,7 @@ export const PORTFOLIO_TOPICS = {
     icon: CandlestickChart,
     tagline: 'Your own positions, your own calls.',
     description:
-      'A brokerage account for running your own book alongside anything managed. Commission-free on US equities and ETFs, with positions, cost basis and unrealised P/L on one screen. Orders are filled by the desk at the published mark — Betamint carries no live exchange feed.',
+      'A brokerage account for running your own book alongside anything managed. Commission-free on US equities and ETFs, with positions, cost basis and unrealised P/L on one screen. Orders are filled by the desk at the published mark — Betament carries no live exchange feed.',
     points: [
       { icon: CandlestickChart, title: 'Commission-free', body: 'No per-trade charge on US equities and ETFs.' },
       { icon: Calculator, title: 'Cost basis tracked', body: 'Unrealised gain and loss maintained per position.' },

@@ -11,7 +11,7 @@ const VALUES = [
 ];
 
 const TIMELINE = [
-  { year: '2019', title: 'The first account', body: 'Betamint opens with one conviction: private-bank quality shouldn’t require a private-bank balance.' },
+  { year: '2019', title: 'The first account', body: 'Betament opens with one conviction: private-bank quality shouldn’t require a private-bank balance.' },
   { year: '2021', title: 'Investing arrives', body: 'Managed mandates launch alongside deposits, so everyday money and long-horizon money finally live in one place.' },
   { year: '2023', title: 'Lending, honestly priced', body: 'Mortgages and personal credit launch with no origination fee and total cost quoted before signing.' },
   { year: 'Today', title: 'Sixty countries', body: 'Clients in 60+ countries hold $4.2 billion with us — and the number we watch is how many of them are ahead of where they started.' },
@@ -23,7 +23,7 @@ export default function About() {
     <PageShell
       eyebrow="About Us"
       title="Built so ordinary people could bank extraordinarily well"
-      lede="Betamint exists for one reason: to give everyone — first account or ninth figure — the same standard of banking, investing and advice."
+      lede="Betament exists for one reason: to give everyone — first account or ninth figure — the same standard of banking, investing and advice."
       icon={Building2}
     >
       {/* mission */}
@@ -37,7 +37,7 @@ export default function About() {
               proudest of has no currency sign. It&rsquo;s the share of clients whose net worth is higher
               than the day they joined.&rdquo;
             </p>
-            <p className="text-[12.5px] mt-6 uppercase tracking-widest relative text-[color:var(--muted-2)]">The Betamint team</p>
+            <p className="text-[12.5px] mt-6 uppercase tracking-widest relative text-[color:var(--muted-2)]">The Betament team</p>
           </div>
         </Reveal>
       </section>
