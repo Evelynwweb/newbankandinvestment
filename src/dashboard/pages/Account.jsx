@@ -104,7 +104,7 @@ function TradeModal({ mode, instruments, holdings, onClose, onDone }) {
           {busy ? 'Placing…' : buying ? `Buy ${fmtUSD(value)}` : `Sell ${units.toFixed(4)} units`}
         </button>
         <p className="text-[11.5px] mt-3 leading-relaxed text-[color:var(--muted-2)]">
-          Orders settle at the published mark. Aurivest carries no live market feed — marks are set
+          Orders settle at the published mark. Betamint carries no live market feed — marks are set
           by the desk and may differ from an exchange print.
         </p>
       </form>
@@ -159,7 +159,7 @@ export default function Account() {
       <PageHeader
         eyebrow="Your position"
         title="Account"
-        subtitle="Every account, position and subscription you hold with Aurivest."
+        subtitle="Every account, position and subscription you hold with Betamint."
       >
         <button onClick={() => setHidden((v) => !v)} className="btn-outline text-[12.5px] px-4 py-2.5">
           {hidden ? <Eye size={14} /> : <EyeOff size={14} />} {hidden ? 'Show' : 'Hide'} values

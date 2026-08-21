@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, ArrowRight } from 'lucide-react';
-import BrandMark from '../ui/BrandMark.jsx';
+import BrandMark, { Wordmark } from '../ui/BrandMark.jsx';
 import { usePageProgress, useScrolled } from '../ui/motion.jsx';
 
 export const MENU = [
@@ -146,7 +146,7 @@ export default function Navbar({ open, setOpen, overHero = false }) {
           <div className="max-w-[1180px] mx-auto px-5 sm:px-6 h-[74px] flex items-center justify-between gap-6">
             <Link to="/" className="flex items-center gap-3 shrink-0 group">
               <BrandMark size={32} className="transition-transform duration-500 group-hover:rotate-[8deg]" />
-              <span className="display-sm text-[22px] tracking-tight">Aurivest</span>
+              <Wordmark size={22} />
             </Link>
 
             <DesktopNav />
@@ -175,7 +175,7 @@ export default function Navbar({ open, setOpen, overHero = false }) {
         <div className="flex items-center justify-between mb-7">
           <div className="flex items-center gap-2.5">
             <BrandMark size={28} />
-            <span className="font-display text-[21px] font-semibold">Aurivest</span>
+            <Wordmark size={21} />
           </div>
           <button onClick={() => setOpen(false)} aria-label="Close menu"><X size={22} /></button>
         </div>

@@ -11,7 +11,7 @@ import { Reveal } from '../components/ui/motion.jsx';
 function HelpCenter() {
   const channels = [
     { icon: MessageCircle, title: 'Live chat', body: 'Talk to a specialist in minutes — 24 hours a day, 7 days a week.', action: 'Start a chat' },
-    { icon: Mail, title: 'Email support', body: 'Send us the detail and we’ll reply with a real answer, not a template.', action: 'support@aurivest.com' },
+    { icon: Mail, title: 'Email support', body: 'Send us the detail and we’ll reply with a real answer, not a template.', action: 'support@betamentmgt.com' },
     { icon: BookOpen, title: 'Guides & tutorials', body: 'Step-by-step walkthroughs for every feature, from first deposit to estate planning.', action: 'Browse guides' },
   ];
   const topics = ['Opening an account', 'Deposits & withdrawals', 'Transfers & wires', 'Cards', 'Investing & mandates', 'Loans & credit', 'Identity verification', 'Account security'];
@@ -93,7 +93,7 @@ function SecurityCenter() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-10">
           {[
             { title: 'Your password', body: 'No employee can see it and none will ever ask you to say or type it for them.' },
-            { title: 'A verification code', body: 'Codes we text you are for you alone. Anyone asking for one is not from Aurivest.' },
+            { title: 'A verification code', body: 'Codes we text you are for you alone. Anyone asking for one is not from Betamint.' },
             { title: 'Remote access', body: 'We will never ask you to install screen-sharing software to "fix" an account issue.' },
             { title: 'A "safe account" transfer', body: 'There is no such thing. Any request to move your money to one is a scam.' },
           ].map((c, i) => (
@@ -116,10 +116,10 @@ const FAQS = [
   { q: 'How do I open an account?', a: 'Click "Open an account", fill in your details, and you’re in within minutes. No paperwork and no credit check to open — identity verification is only required before your first withdrawal.' },
   { q: 'What does it cost?', a: 'Nothing to hold. No monthly fee, no minimum balance and no overdraft fee on checking. Wires and a small number of specialist services carry a published fee; everything else is free.' },
   { q: 'Is my money safe?', a: 'Deposit balances are insured to the applicable statutory limit, client securities are held by an independent custodian, and every payment is screened in real time. Investment products are separate: they are not deposits, are not insured, and may lose value.' },
-  { q: 'How fast are transfers?', a: 'Between your own Aurivest accounts, instantly and free. Domestic ACH is free and lands in one to two business days. Same-day wires are $15 and clear the same day if sent before the cut-off.' },
+  { q: 'How fast are transfers?', a: 'Between your own Betamint accounts, instantly and free. Domestic ACH is free and lands in one to two business days. Same-day wires are $15 and clear the same day if sent before the cut-off.' },
   { q: 'What return should I expect on investments?', a: 'Reserve Savings pays a variable 4.65% APY. Market-linked mandates carry target rates from 5.10% to 14.50% depending on term and risk — targets, not guarantees. Higher targets carry a real possibility of loss.' },
   { q: 'How do I verify my identity?', a: 'Head to the verification section of your dashboard, submit a government-issued document and your address, and our compliance team reviews it. Most submissions clear within 24 hours.' },
-  { q: 'Can I get a loan or mortgage?', a: 'Yes — personal loans from 8.9% APR, auto from 6.4%, and 30-year fixed mortgages from 5.75% with no lender origination fee for Aurivest clients. All credit is subject to approval.' },
+  { q: 'Can I get a loan or mortgage?', a: 'Yes — personal loans from 8.9% APR, auto from 6.4%, and 30-year fixed mortgages from 5.75% with no lender origination fee for Betamint clients. All credit is subject to approval.' },
   { q: 'Can I close my account and take my money?', a: 'Any time, with no exit fee. Flexible products pay out immediately; fixed-term mandates pay at maturity or, if you need it sooner, at the current value of the underlying holdings.' },
 ];
 

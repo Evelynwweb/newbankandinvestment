@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ShieldCheck, PiggyBank, Star } from 'lucide-react';
-import { BRAND } from '../dashboard/data.jsx';
+import { BRAND, BRAND_FULL } from '../dashboard/data.jsx';
 import BrandMark from '../components/ui/BrandMark.jsx';
 import { getPreferredTheme, watchSystemTheme } from '../lib/theme.js';
 import LandingChatbot from '../components/home/LandingChatbot.jsx';
@@ -53,7 +53,7 @@ export default function AuthShell({ children }) {
           </div>
         </div>
 
-        <p className="text-[11.5px] text-[color:var(--muted-2)]">&copy; 2026 {BRAND}. All rights reserved.</p>
+        <p className="text-[11.5px] text-[color:var(--muted-2)]">&copy; 2026 {BRAND_FULL}. All rights reserved.</p>
       </aside>
 
       <main className="auth-main">

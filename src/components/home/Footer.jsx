@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import BrandMark from '../ui/BrandMark.jsx';
+import BrandMark, { Wordmark } from '../ui/BrandMark.jsx';
 
 /* Colophon — the small print at the foot of the page, set like one. */
 const COLS = [
@@ -33,7 +33,7 @@ export default function Footer() {
         <div>
           <div className="flex items-center gap-2.5">
             <BrandMark size={26} />
-            <span className="font-display text-[19px] font-semibold">Aurivest</span>
+            <Wordmark size={19} />
           </div>
           <p className="mt-4 text-[13.5px] leading-relaxed max-w-[260px] text-[color:var(--muted)]">
             Everyday banking and long-horizon investing, held to the same standard of care.
@@ -58,7 +58,7 @@ export default function Footer() {
       <div className="border-t border-[color:var(--rule)]">
         <div className="max-w-[1180px] mx-auto px-5 sm:px-6 py-7 text-[11.5px] leading-relaxed text-[color:var(--muted-2)]">
           <div className="flex flex-col sm:flex-row justify-between gap-2 mb-3">
-            <span>&copy; 2026 Aurivest Bank &amp; Trust. All rights reserved.</span>
+            <span>&copy; 2026 Betamint Assets Management. All rights reserved.</span>
             <span>Deposits insured to the applicable statutory limit &middot; Equal Housing Lender</span>
           </div>
           <p className="max-w-3xl">

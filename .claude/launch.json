@@ -2,13 +2,13 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "aurivest-dev",
+      "name": "betamint-dev",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "port": 5173
     },
     {
-      "name": "aurivest-admin",
+      "name": "betamint-admin",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["--prefix", "../invandbankadmin", "run", "dev"],
       "port": 5174

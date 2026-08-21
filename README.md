@@ -1,4 +1,4 @@
-# Aurivest — Investment & Banking Frontend
+# Betamint Assets Management — Investment & Banking Frontend
 
 A React + Vite frontend for a combined **banking and investment** platform: insured deposit
 accounts, cards, transfers, managed investment mandates, loans and financial planning.
@@ -25,7 +25,7 @@ localStorage and implements the same routes a real server would.
 Sign in with the seeded demo client:
 
 ```
-demo@aurivest.com / demo1234
+demo@betamentmgt.com / demo1234
 ```
 
 Or open a new account through `/register` — the verification code is printed to the browser console.

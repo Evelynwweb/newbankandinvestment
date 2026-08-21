@@ -37,7 +37,7 @@ const KB = [
   },
   {
     keys: ['loan', 'borrow', 'credit', 'mortgage', 'apr', 'finance'],
-    answer: 'Personal loans start at 8.9% APR, auto loans at 6.4%, and 30-year fixed mortgages at 5.75% with no lender origination fee for Aurivest clients. Decisions on personal loans usually land the same day.',
+    answer: 'Personal loans start at 8.9% APR, auto loans at 6.4%, and 30-year fixed mortgages at 5.75% with no lender origination fee for Betamint clients. Decisions on personal loans usually land the same day.',
     link: { label: 'Loans & credit', to: '/banking/loans' },
   },
   {
@@ -47,7 +47,7 @@ const KB = [
   },
   {
     keys: ['transfer', 'send money', 'wire', 'ach', 'payment', 'pay'],
-    answer: 'Transfers between your own Aurivest accounts settle instantly and free. Domestic ACH is free and lands in 1–2 business days; same-day wires are $15. International wires quote the full cost up front — no hidden spread.',
+    answer: 'Transfers between your own Betamint accounts settle instantly and free. Domestic ACH is free and lands in 1–2 business days; same-day wires are $15. International wires quote the full cost up front — no hidden spread.',
     link: { label: 'Transfers & payments', to: '/banking/transfers' },
   },
   {
@@ -85,12 +85,12 @@ const KB = [
   },
   {
     keys: ['support', 'contact', 'help', 'human', 'phone', 'email'],
-    answer: 'Real people, 24/7 — live chat from the dashboard, or support@aurivest.com. Complex cases get a named specialist who stays with your ticket until it closes.',
+    answer: 'Real people, 24/7 — live chat from the dashboard, or support@betamentmgt.com. Complex cases get a named specialist who stays with your ticket until it closes.',
     link: { label: 'Help Center', to: '/resources/help-center' },
   },
   {
     keys: ['country', 'available', 'where', 'international', 'global'],
-    answer: 'Aurivest serves clients in 60+ countries. Product availability varies by jurisdiction — the account opening flow shows exactly what is available where you live.',
+    answer: 'Betamint serves clients in 60+ countries. Product availability varies by jurisdiction — the account opening flow shows exactly what is available where you live.',
   },
 ];
 

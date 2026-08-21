@@ -1,7 +1,7 @@
 /* Shared light/dark theme helpers for the dashboard and auth screens.
    The device's color scheme is the default; a manual toggle in the
    dashboard saves an override that then wins on every surface. */
-export const THEME_KEY = 'aurivest-dash-theme';
+export const THEME_KEY = 'betamint-dash-theme';
 
 export const systemTheme = () =>
   (typeof window !== 'undefined' && window.matchMedia?.('(prefers-color-scheme: light)').matches)
