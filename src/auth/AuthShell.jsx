@@ -4,7 +4,6 @@ import { ShieldCheck, PiggyBank, Star } from 'lucide-react';
 import { BRAND, BRAND_FULL } from '../dashboard/data.jsx';
 import BrandMark from '../components/ui/BrandMark.jsx';
 import { getPreferredTheme, watchSystemTheme } from '../lib/theme.js';
-import LandingChatbot from '../components/home/LandingChatbot.jsx';
 import '../index.css';
 import './auth.css';
 
@@ -60,7 +59,6 @@ export default function AuthShell({ children }) {
         <div className="auth-card">{children}</div>
       </main>
 
-      <LandingChatbot />
     </div>
   );
 }

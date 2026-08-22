@@ -5,7 +5,6 @@ import TopNav from './TopNav.jsx';
 import BottomNav from './BottomNav.jsx';
 import MobileNav from './MobileNav.jsx';
 import SearchOverlay from './SearchOverlay.jsx';
-import SupportWidget from './SupportWidget.jsx';
 import LoadingScreen from '../../components/ui/LoadingScreen.jsx';
 import { NAV_ITEMS } from '../data.jsx';
 import { useAuth } from '../../auth/AuthContext.jsx';
@@ -89,7 +88,6 @@ export default function DashboardLayout() {
       </div>
 
       <BottomNav />
-      <SupportWidget />
       <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
     </div>
   );

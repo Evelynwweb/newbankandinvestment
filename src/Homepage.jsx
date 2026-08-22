@@ -8,7 +8,6 @@ import {
 import { Reveal, MaskLines, CountUp, Plate, useInView } from './components/ui/motion.jsx';
 import Navbar from './components/home/Navbar.jsx';
 import Footer from './components/home/Footer.jsx';
-import LandingChatbot from './components/home/LandingChatbot.jsx';
 import GoldDust from './components/home/GoldDust.jsx';
 import CinemaScroll from './components/home/CinemaScroll.jsx';
 import './index.css';
@@ -508,7 +507,6 @@ export default function Homepage() {
         <Closing />
       </main>
       <Footer />
-      <LandingChatbot />
     </div>
   );
 }

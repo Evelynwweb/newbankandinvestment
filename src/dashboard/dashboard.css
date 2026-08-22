@@ -192,6 +192,15 @@
   padding-bottom: env(safe-area-inset-bottom, 0);
 }
 @media (min-width: 768px) { .dash-tabbar { display: none; } }
+
+/* The Smartsupp launcher would otherwise sit on top of the tab bar.
+   Only the collapsed pill is moved — the open panel keeps its own
+   full-height placement, so it is matched on its border-radius. */
+@media (max-width: 767px) {
+  body:has(.dash-tabbar) #smartsupp-widget-container > div[style*="border-radius: 9999px"] {
+    bottom: 80px !important;
+  }
+}
 .dash-tab {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 5px; padding: 10px 2px 9px;
